@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GalleryFahmi</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --card: #fff;
+      --text: #222;
+      --muted: #666;
+      --primary: #2563eb;
+      --border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 16px 20px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    header h2 {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 16px 32px;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0 28px;
+    }
+
+    .filters button {
+      border: none;
+      background: var(--primary);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .filters button:hover {
+      opacity: 0.9;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .photo-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+      background: #ddd;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .photo-card img:hover {
+      transform: scale(1.02);
+    }
+
+    .photo-card p {
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 16px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+      margin-top: 30px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 100%;
+      max-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal img {
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 36px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 1001;
+    }
+
+    .modal-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+      background: rgba(0,0,0,0.45);
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 90%;
+    }
+
+    .modal-counter {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #fff;
+      font-size: 14px;
+      background: rgba(0,0,0,0.45);
+      padding: 8px 12px;
+      border-radius: 8px;
+      z-index: 1001;
+    }
+
+    .modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      backdrop-filter: blur(2px);
+      transition: 0.2s;
+      z-index: 1001;
+    }
+
+    .modal-nav:hover {
+      background: rgba(255,255,255,0.28);
+    }
+
+    .modal-prev {
+      left: 20px;
+    }
+
+    .modal-next {
+      right: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .modal-nav {
+        width: 42px;
+        height: 42px;
+        font-size: 20px;
+      }
+
+      .photo-card img {
+        height: 260px;
+      }
+
+      .modal-counter {
+        top: 16px;
+        left: 16px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GalleryFahmi</h1>
+    <h2>Photo Gallery</h2>
+    <p>Galeri Foto</p>
+    <p>Pilih kategori untuk melihat koleksi foto.</p>
+  </header>
+
+  <main>
+    <section class="filters">
+      <button onclick="filterGallery('all')">Semua</button>
+      <button onclick="filterGallery('random')">Photo Random</button>
+      <button onclick="filterGallery('cosplayer')">Cosplayer</button>
+    </section>
+
+    <section class="gallery">
+      <!-- Photo Random -->
+      <div class="photo-card" data-category="random">
+        <img src="https://via.placeholder.com/400x300?text=Photo+Random+1" alt="Photo Random 1" loading="lazy" onclick="openModal(this)">
+        <p>Photo Random 1</p>
+      </div>
+
+      <div class="photo-card" data-category="random">
+        <img src="https://via.placeholder.com/400x300?text=Photo+Random+2" alt="Photo Random 2" loading="lazy" onclick="openModal(this)">
+        <p>Photo Random 2</p>
+      </div>
+
+      <!-- Cosplayer -->
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_1.jpg" alt="Cosplayer 1" loading="lazy" onclick="openModal(this)">
+        <p>Cosplayer 1</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_2.jpg" alt="Cosplayer 2" loading="lazy" onclick="openModal(this)">
+        <p>Cosplayer 2</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_3.jpg" alt="Cosplayer 3" loading="lazy" onclick="openModal(this)">
+        <p>Cosplayer 3</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_4.jpg" alt="Cosplayer 4" loading="lazy" onclick="openModal(this)">
+        <p>Cosplayer 4</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_5.jpg" alt="Cosplayer 5" loading="lazy" onclick="openModal(this)">
+        <p>Cosplayer 5</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_6.jpg" alt="Cosplayer 6" loading="lazy" onclick="openModal(this)">
+        <p>Cosplayer 6</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_7.jpg" alt="Cosplayer 7" loading="lazy" onclick="openModal(this)">
+        <p>Cosplayer 7</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2026 PhotoGallery. All rights reserved.
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="imageModal" onclick="handleBackdropClick(event)">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <div class="modal-counter" id="modalCounter">1 / 1</div>
+
+    <button class="modal-nav modal-prev" onclick="prevImage(event)">❮</button>
+
+    <div class="modal-content">
+      <img id="modalImage" src="" alt="Preview Full Size">
+      <div class="modal-caption" id="modalCaption"></div>
+    </div>
+
+    <button class="modal-nav modal-next" onclick="nextImage(event)">❯</button>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    let visibleImages = [];
+
+    function getVisibleImages() {
+      return Array.from(document.querySelectorAll('.photo-card:not(.hidden) img'));
+    }
+
+    function filterGallery(category) {
+      const items = document.querySelectorAll('.photo-card');
+
+      items.forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        if (category === 'all' || itemCategory === category) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      visibleImages = getVisibleImages();
+    }
+
+    function openModal(img) {
+      visibleImages = getVisibleImages();
+      currentIndex = visibleImages.indexOf(img);
+
+      const modal = document.getElementById('imageModal');
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+
+      updateModalImage();
+    }
+
+    function updateModalImage() {
+      const modalImg = document.getElementById('modalImage');
+      const caption = document.getElementById('modalCaption');
+      const counter = document.getElementById('modalCounter');
+
+      if (!visibleImages.length) return;
+
+      const currentImg = visibleImages[currentIndex];
+      modalImg.src = currentImg.src;
+      modalImg.alt = currentImg.alt;
+      caption.textContent = currentImg.alt;
+      counter.textContent = `${currentIndex + 1} / ${visibleImages.length}`;
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('imageModal');
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    function prevImage(event) {
+      event.stopPropagation();
+      if (!visibleImages.length) return;
+      currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
+      updateModalImage();
+    }
+
+    function nextImage(event) {
+      event.stopPropagation();
+      if (!visibleImages.length) return;
+      currentIndex = (currentIndex + 1) % visibleImages.length;
+      updateModalImage();
+    }
+
+    function handleBackdropClick(event) {
+      if (event.target.id === 'imageModal') {
+        closeModal();
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      const modal = document.getElementById('imageModal');
+      const isOpen = modal.classList.contains('show');
+
+      if (!isOpen) return;
+
+      if (event.key === 'Escape') {
+        closeModal();
+      } else if (event.key === 'ArrowLeft') {
+        currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
+        updateModalImage();
+      } else if (event.key === 'ArrowRight') {
+        currentIndex = (currentIndex + 1) % visibleImages.length;
+        updateModalImage();
+      }
+    });
+
+    visibleImages = getVisibleImages();
+  </script>
+</body>
+</html>

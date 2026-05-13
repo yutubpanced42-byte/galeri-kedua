@@ -114,9 +114,10 @@
       justify-content: center;
     }
 
-    .video-container ix-player {
+    .video-container video {
       width: 100%;
       height: 100%;
+      object-fit: contain;
     }
 
     .photo-card p {
@@ -272,13 +273,13 @@
     </section>
 
     <section class="gallery">
-      <!-- Hanya satu kartu video embed di kategori VideoNganu, placeholder sudah dihapus -->
+      <!-- Kartu video dengan tag HTML5 langsung -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
-          <div class="ix-embed-video">
-            <script defer type="module" src="https://static.imgix.net/ix-player/@latest/dist/ix-player.mjs"></script>
-            <ix-player type="hls" src="https://6a04a73c46fc04f7c2e1d496.imgix.net/Sneaky%20Smash%20At%20The%20Birthday%20Bash%20%E2%80%93%20PornXP_1.mp4?ixembed=1778691650631&fm=hls"></ix-player>
-          </div>
+          <video controls poster="https://via.placeholder.com/400x300?text=Video+Preview">
+            <source src="https://6a04a73c46fc04f7c2e1d496.imgix.net/Sneaky%20Smash%20At%20The%20Birthday%20Bash%20%E2%80%93%20PornXP_1.mp4" type="video/mp4">
+            Browser tidak mendukung video.
+          </video>
         </div>
         <p>Sneaky Smash At The Birthday Bash – PornXP_1</p>
       </div>
@@ -505,4 +506,4 @@
     visibleImages = getVisibleImages();
   </script>
 </body>
-                                                                                                              </html>
+  </html>

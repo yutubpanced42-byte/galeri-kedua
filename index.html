@@ -260,6 +260,8 @@
       }
     }
   </style>
+  <!-- HLS.js untuk memutar streaming .m3u8 -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
   <header>
@@ -307,13 +309,10 @@
         <p>Embed Video Player</p>
       </div>
 
-      <!-- Video baru sesuai permintaan -->
+      <!-- Video baru: tolong aku tidak bisa di usir (HLS .m3u8) -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
-          <video controls poster="https://via.placeholder.com/400x300?text=Tolong+Aku+Tidak+Bisa+Di+Usir">
-            <source src="https://km-h.phncdn.com/hls/videos/202011/17/370926942/720P_4000K_370926942.mp4/index-v1-a1.m3u8?hdnea=st=1778856282\~exp=1778859882\~hdl=-1\~hmac=c193d841b2fac834e844c14ed553258a12b85cd4" type="application/vnd.apple.mpegurl">
-            Browser tidak mendukung video.
-          </video>
+          <video id="hlsVideoTolong" controls playsinline poster="https://via.placeholder.com/400x300?text=Tolong+aku+tidak+bisa+di+usir"></video>
         </div>
         <p>tolong aku tidak bisa di usir</p>
       </div>
@@ -536,7 +535,37 @@
       }
     });
 
+    // Inisialisasi visibleImages awal
     visibleImages = getVisibleImages();
+
+    // Setup HLS untuk video "tolong aku tidak bisa di usir"
+    (function initHlsVideo() {
+      const videoElement = document.getElementById('hlsVideoTolong');
+      if (!videoElement) return;
+      const hlsUrl = 'https://km-h.phncdn.com/hls/videos/202011/17/370926942/720P_4000K_370926942.mp4/index-v1-a1.m3u8?hdnea=st=1778856282~exp=1778859882~hdl=-1~hmac=c193d841b2fac834e844c14ed553258a12b85cd4';
+      
+      // Cek dukungan HLS.js
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(hlsUrl);
+        hls.attachMedia(videoElement);
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+          // Video siap diputar, tidak autoplay otomatis agar sesuai kebijakan browser
+          console.log('HLS video siap dimainkan');
+        });
+        hls.on(Hls.Events.ERROR, function (event, data) {
+          console.error('HLS error:', data);
+        });
+      } 
+      // Fallback untuk browser yang mendukung native HLS (Safari)
+      else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+        videoElement.src = hlsUrl;
+      } else {
+        console.warn('HLS tidak didukung di browser ini');
+        // Tampilkan pesan error di poster atau fallback
+        videoElement.poster = 'https://via.placeholder.com/400x300?text=Video+tidak+dapat+diputar';
+      }
+    })();
   </script>
 </body>
 </html>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GalleryFahmi</title>
+
   <style>
     :root {
       --bg: #f5f7fa;
@@ -11,6 +12,7 @@
       --text: #222;
       --muted: #666;
       --primary: #2563eb;
+      --primary-dark: #1d4ed8;
       --border: #e5e7eb;
     }
 
@@ -25,6 +27,13 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
+    }
+
+    img,
+    video,
+    iframe {
+      display: block;
+      max-width: 100%;
     }
 
     header {
@@ -70,10 +79,16 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
+      transition: 0.2s ease;
     }
 
     .filters button:hover {
-      opacity: 0.9;
+      opacity: 0.92;
+    }
+
+    .filters button.active {
+      background: var(--primary-dark);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
     }
 
     .gallery {
@@ -87,14 +102,13 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
 
     .photo-card img {
       width: 100%;
       height: 300px;
       object-fit: cover;
-      display: block;
       background: #ddd;
       cursor: pointer;
       transition: transform 0.2s ease;
@@ -112,12 +126,14 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      overflow: hidden;
     }
 
     .video-container video {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      background: #000;
     }
 
     .video-container iframe {
@@ -126,32 +142,11 @@
       border: none;
     }
 
-    .video-error-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.85);
-      color: #ff8888;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-size: 14px;
-      padding: 16px;
-      z-index: 5;
-      backdrop-filter: blur(4px);
-    }
-
-    .video-error-overlay span {
-      background: #ff4444;
-      color: white;
-      padding: 6px 12px;
-      border-radius: 30px;
-      margin-top: 12px;
-      font-size: 12px;
+    /* Responsive iframe untuk Streamtape */
+    .video-container.responsive-iframe {
+      height: auto;
+      aspect-ratio: 16 / 9;
+      background: #000;
     }
 
     .photo-card p {
@@ -170,7 +165,7 @@
     }
 
     .hidden {
-      display: none;
+      display: none !important;
     }
 
     .modal {
@@ -202,6 +197,7 @@
       max-height: 88vh;
       border-radius: 10px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      object-fit: contain;
     }
 
     .modal-close {
@@ -213,6 +209,7 @@
       cursor: pointer;
       font-weight: bold;
       z-index: 1001;
+      user-select: none;
     }
 
     .modal-caption {
@@ -271,15 +268,15 @@
     }
 
     @media (max-width: 600px) {
+      .photo-card img,
+      .video-container:not(.responsive-iframe) {
+        height: 260px;
+      }
+
       .modal-nav {
         width: 42px;
         height: 42px;
         font-size: 20px;
-      }
-
-      .photo-card img,
-      .video-container {
-        height: 260px;
       }
 
       .modal-counter {
@@ -289,6 +286,7 @@
       }
     }
   </style>
+
   <!-- HLS.js untuk streaming .m3u8 -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
@@ -302,16 +300,16 @@
 
   <main>
     <section class="filters">
-      <button onclick="filterGallery('all')">Semua</button>
-      <button onclick="filterGallery('VideoNganu')">VideoNganu</button>
-      <button onclick="filterGallery('cosplayer')">Cosplayer</button>
+      <button type="button" class="filter-btn active" data-filter="all">Semua</button>
+      <button type="button" class="filter-btn" data-filter="VideoNganu">VideoNganu</button>
+      <button type="button" class="filter-btn" data-filter="cosplayer">Cosplayer</button>
     </section>
 
     <section class="gallery">
       <!-- Video pertama di kategori VideoNganu -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
-          <video controls poster="https://via.placeholder.com/400x300?text=Video+Preview">
+          <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Video+Preview">
             <source src="https://6a04a73c46fc04f7c2e1d496.imgix.net/Sneaky%20Smash%20At%20The%20Birthday%20Bash%20%E2%80%93%20PornXP_1.mp4" type="video/mp4">
             Browser tidak mendukung video.
           </video>
@@ -322,7 +320,7 @@
       <!-- Video kedua: Hanna Hays Cum4k -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
-          <video controls poster="https://via.placeholder.com/400x300?text=Hanna+Hays+Cum4k">
+          <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Hanna+Hays+Cum4k">
             <source src="https://6a04d6a146fc04f7c2e1d8c4.imgix.net/1000139601.mp4" type="video/mp4">
             Browser tidak mendukung video.
           </video>
@@ -333,7 +331,14 @@
       <!-- Video embed iframe -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
-          <iframe src="https://abyssplayer.com/1UTPa1UcY" frameborder="0" scrolling="0" allowfullscreen></iframe>
+          <iframe
+            src="https://abyssplayer.com/1UTPa1UcY"
+            title="Embed Video Player"
+            frameborder="0"
+            scrolling="0"
+            loading="lazy"
+            allowfullscreen>
+          </iframe>
         </div>
         <p>Embed Video Player</p>
       </div>
@@ -341,123 +346,152 @@
       <!-- Video: tolong aku tidak bisa di usir (HLS .m3u8) -->
       <div class="photo-card" data-category="VideoNganu" id="cardHlsTolong">
         <div class="video-container" id="hlsContainerTolong">
-          <video id="hlsVideoTolong" controls playsinline crossorigin="anonymous" poster="https://via.placeholder.com/400x300?text=Memuat+video..."></video>
+          <video
+            id="hlsVideoTolong"
+            controls
+            playsinline
+            crossorigin="anonymous"
+            preload="metadata"
+            poster="https://via.placeholder.com/400x300?text=Memuat+video...">
+          </video>
         </div>
         <p>tolong aku tidak bisa di usir</p>
       </div>
 
-      <!-- Video BARU: Hazel Moore - Risky Sex With Stepbro In The Room - TittyAttack siska.tv (link sudah diganti) -->
+      <!-- Video Hazel Moore part 1 (link HLS) -->
       <div class="photo-card" data-category="VideoNganu" id="cardHlsHazel">
         <div class="video-container" id="hlsContainerHazel">
-          <video id="hlsVideoHazel" controls playsinline crossorigin="anonymous" poster="https://via.placeholder.com/400x300?text=Hazel+Moore+-+Streaming"></video>
+          <video
+            id="hlsVideoHazel"
+            controls
+            playsinline
+            crossorigin="anonymous"
+            preload="metadata"
+            poster="https://via.placeholder.com/400x300?text=Hazel+Moore+-+Streaming">
+          </video>
         </div>
         <p>Hazel Moore - Risky Sex With Stepbro In The Room - TittyAttack siska.tv</p>
       </div>
 
-      <!-- Cosplayer (tidak berubah) -->
+      <!-- Video BARU: Hazel Moore part 2 (Embed Streamtape) -->
+      <div class="photo-card" data-category="VideoNganu">
+        <div class="video-container responsive-iframe">
+          <iframe
+            src="https://streamtape.com/e/KLqp2j77zqu0e94"
+            title="Hazel Moore part 2"
+            frameborder="0"
+            loading="lazy"
+            allowfullscreen
+            allow="autoplay">
+          </iframe>
+        </div>
+        <p>Hazel Moore part 2</p>
+      </div>
+
+      <!-- Cosplayer -->
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_1.jpg" alt="Cosplayer 1" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_1.jpg" alt="Cosplayer 1" loading="lazy">
         <p>Cosplayer 1</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_2.jpg" alt="Cosplayer 2" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_2.jpg" alt="Cosplayer 2" loading="lazy">
         <p>Cosplayer 2</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_3.jpg" alt="Cosplayer 3" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_3.jpg" alt="Cosplayer 3" loading="lazy">
         <p>Cosplayer 3</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_4.jpg" alt="Cosplayer 4" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_4.jpg" alt="Cosplayer 4" loading="lazy">
         <p>Cosplayer 4</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_5.jpg" alt="Cosplayer 5" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_5.jpg" alt="Cosplayer 5" loading="lazy">
         <p>Cosplayer 5</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_6.jpg" alt="Cosplayer 6" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_6.jpg" alt="Cosplayer 6" loading="lazy">
         <p>Cosplayer 6</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_7.jpg" alt="Cosplayer 7" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_7.jpg" alt="Cosplayer 7" loading="lazy">
         <p>Cosplayer 7</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_9.jpg" alt="Cosplayer 9" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_9.jpg" alt="Cosplayer 9" loading="lazy">
         <p>Cosplayer 9</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_10.jpg" alt="Cosplayer 10" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_10.jpg" alt="Cosplayer 10" loading="lazy">
         <p>Cosplayer 10</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_11.jpg" alt="Cosplayer 11" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_11.jpg" alt="Cosplayer 11" loading="lazy">
         <p>Cosplayer 11</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_12.jpg" alt="Cosplayer 12" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_12.jpg" alt="Cosplayer 12" loading="lazy">
         <p>Cosplayer 12</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_13.jpg" alt="Cosplayer 13" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_13.jpg" alt="Cosplayer 13" loading="lazy">
         <p>Cosplayer 13</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_14.jpg" alt="Cosplayer 14" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_14.jpg" alt="Cosplayer 14" loading="lazy">
         <p>Cosplayer 14</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_15.jpg" alt="Cosplayer 15" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_15.jpg" alt="Cosplayer 15" loading="lazy">
         <p>Cosplayer 15</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_16.jpg" alt="Cosplayer 16" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_16.jpg" alt="Cosplayer 16" loading="lazy">
         <p>Cosplayer 16</p>
       </div>
 
       <!-- Foto baru cosplayer 17 - 22 -->
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2652.jpg" alt="Cosplayer 17" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2652.jpg" alt="Cosplayer 17" loading="lazy">
         <p>Cosplayer 17</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2653.jpg" alt="Cosplayer 18" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2653.jpg" alt="Cosplayer 18" loading="lazy">
         <p>Cosplayer 18</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2654.jpg" alt="Cosplayer 19" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2654.jpg" alt="Cosplayer 19" loading="lazy">
         <p>Cosplayer 19</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2655.jpg" alt="Cosplayer 20" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2655.jpg" alt="Cosplayer 20" loading="lazy">
         <p>Cosplayer 20</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2656.jpg" alt="Cosplayer 21" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2656.jpg" alt="Cosplayer 21" loading="lazy">
         <p>Cosplayer 21</p>
       </div>
 
       <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2657.jpg" alt="Cosplayer 22" loading="lazy" onclick="openModal(this)">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2657.jpg" alt="Cosplayer 22" loading="lazy">
         <p>Cosplayer 22</p>
       </div>
     </section>
@@ -471,14 +505,14 @@
     <span class="modal-close" onclick="closeModal()">&times;</span>
     <div class="modal-counter" id="modalCounter">1 / 1</div>
 
-    <button class="modal-nav modal-prev" onclick="prevImage(event)">❮</button>
+    <button class="modal-nav modal-prev" onclick="prevImage(event)" aria-label="Sebelumnya">❮</button>
 
     <div class="modal-content">
       <img id="modalImage" src="" alt="Preview Full Size">
       <div class="modal-caption" id="modalCaption"></div>
     </div>
 
-    <button class="modal-nav modal-next" onclick="nextImage(event)">❯</button>
+    <button class="modal-nav modal-next" onclick="nextImage(event)" aria-label="Berikutnya">❯</button>
   </div>
 
   <script>
@@ -487,6 +521,12 @@
 
     function getVisibleImages() {
       return Array.from(document.querySelectorAll('.photo-card:not(.hidden) img'));
+    }
+
+    function setActiveFilterButton(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === category);
+      });
     }
 
     function filterGallery(category) {
@@ -502,11 +542,24 @@
       });
 
       visibleImages = getVisibleImages();
+      setActiveFilterButton(category);
+
+      const modal = document.getElementById('imageModal');
+      if (modal.classList.contains('show')) {
+        if (!visibleImages.length) {
+          closeModal();
+        } else {
+          currentIndex = 0;
+          updateModalImage();
+        }
+      }
     }
 
     function openModal(img) {
       visibleImages = getVisibleImages();
       currentIndex = visibleImages.indexOf(img);
+
+      if (currentIndex === -1 || !visibleImages.length) return;
 
       const modal = document.getElementById('imageModal');
       modal.classList.add('show');
@@ -555,11 +608,27 @@
       }
     }
 
+    function initImageModalClicks() {
+      const images = document.querySelectorAll('.photo-card img');
+      images.forEach(img => {
+        img.addEventListener('click', () => openModal(img));
+      });
+    }
+
+    function initFilterButtons() {
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          filterGallery(button.dataset.filter);
+        });
+      });
+    }
+
     document.addEventListener('keydown', function(event) {
       const modal = document.getElementById('imageModal');
       const isOpen = modal.classList.contains('show');
 
-      if (!isOpen) return;
+      if (!isOpen || !visibleImages.length) return;
 
       if (event.key === 'Escape') {
         closeModal();
@@ -572,95 +641,61 @@
       }
     });
 
-    // Inisialisasi visibleImages awal
-    visibleImages = getVisibleImages();
-
-    // Fungsi umum untuk menginisialisasi video HLS dengan error handling
-    function initHlsVideo(videoId, containerId, streamUrl, customErrorMessage = null) {
+    // Fungsi untuk menginisialisasi video HLS tanpa menampilkan error ke user
+    function initHlsVideoSilent(videoId, streamUrl) {
       const videoElement = document.getElementById(videoId);
       if (!videoElement) return false;
-      
-      const container = document.getElementById(containerId);
-      
-      function showErrorOverlay(message) {
-        if (!container) return;
-        let overlay = container.querySelector('.video-error-overlay');
-        if (!overlay) {
-          overlay = document.createElement('div');
-          overlay.className = 'video-error-overlay';
-          container.appendChild(overlay);
-        }
-        overlay.innerHTML = `<div style="font-weight:bold;">⚠️ Video gagal diputar</div>
-                             <div style="font-size:12px; margin-top:8px;">${message}</div>
-                             <span>⏱️ Coba segarkan halaman atau periksa link</span>`;
-        videoElement.poster = 'https://via.placeholder.com/400x300?text=Video+Error';
-      }
-      
-      function removeOverlay() {
-        if (container) {
-          const oldOverlay = container.querySelector('.video-error-overlay');
-          if (oldOverlay) oldOverlay.remove();
-        }
-      }
-      
-      if (Hls.isSupported()) {
-        removeOverlay();
+
+      if (window.Hls && Hls.isSupported()) {
         const hls = new Hls({
           debug: false,
           enableWorker: true,
           maxBufferLength: 30,
           startLevel: -1
         });
-        
+
         hls.loadSource(streamUrl);
         hls.attachMedia(videoElement);
-        
+
         hls.on(Hls.Events.MANIFEST_PARSED, function() {
           console.log(`HLS: ${videoId} manifest berhasil diparsing`);
-          removeOverlay();
           videoElement.controls = true;
         });
-        
-        hls.on(Hls.Events.ERROR, function (event, data) {
+
+        hls.on(Hls.Events.ERROR, function(event, data) {
           console.error(`HLS Error (${videoId}):`, data);
-          let errorMsg = customErrorMessage || 'Gagal memuat streaming video. ';
-          if (data.details === 'manifestLoadError' || data.details === 'manifestParsingError') {
-            errorMsg += 'File manifest (.m3u8) tidak dapat diakses. Mungkin token kadaluwarsa.';
-          } else if (data.details === 'fragLoadError') {
-            errorMsg += 'Gagal memuat segmen video. Koneksi atau server bermasalah.';
-          } else {
-            errorMsg += 'Error tidak dikenal. Coba segarkan halaman.';
-          }
-          showErrorOverlay(errorMsg);
         });
-        
+
         return true;
-      } 
-      else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-        removeOverlay();
+      } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
         videoElement.src = streamUrl;
         videoElement.addEventListener('error', function(e) {
-          showErrorOverlay('Video tidak dapat diputar secara native. Mungkin token kadaluwarsa atau CORS.');
+          console.error(`Native HLS error (${videoId}):`, e);
         });
         return true;
-      } 
-      else {
-        showErrorOverlay('Browser Anda tidak mendukung pemutaran video HLS (streaming .m3u8). Gunakan Chrome, Edge, atau Safari.');
+      } else {
+        console.warn(`Browser tidak mendukung HLS untuk ${videoId}`);
         return false;
       }
     }
 
-    // Inisialisasi video "tolong aku tidak bisa di usir"
-    initHlsVideo('hlsVideoTolong', 'hlsContainerTolong', 
-      'https://km-h.phncdn.com/hls/videos/202011/17/370926942/720P_4000K_370926942.mp4/index-v1-a1.m3u8?hdnea=st=1778856282~exp=1778859882~hdl=-1~hmac=c193d841b2fac834e844c14ed553258a12b85cd4',
-      'Streaming tidak dapat dimuat. '
-    );
+    document.addEventListener('DOMContentLoaded', function() {
+      initFilterButtons();
+      initImageModalClicks();
+      visibleImages = getVisibleImages();
 
-    // Inisialisasi video BARU: Hazel Moore - DENGAN LINK YANG SUDAH DIGANTI
-    initHlsVideo('hlsVideoHazel', 'hlsContainerHazel',
-      'https://t59.pcloud.com/cWZ54SkFX7ZskoqAP7ZZZ9xFD5kZQ5ZZWFXZZTv1KfZjmZOMZQmZv8ZlMZhFZtzZZETZwTZ4HZ8LZAMZInZkzZZHUQK5Z2by3W3B7C6zh0gK5nMQeipHT7Wfk/master.m3u8',
-      'Gagal memuat video Hazel Moore. '
-    );
+      // Inisialisasi video "tolong aku tidak bisa di usir" (silent)
+      initHlsVideoSilent(
+        'hlsVideoTolong',
+        'https://km-h.phncdn.com/hls/videos/202011/17/370926942/720P_4000K_370926942.mp4/index-v1-a1.m3u8?hdnea=st=1778856282~exp=1778859882~hdl=-1~hmac=c193d841b2fac834e844c14ed553258a12b85cd4'
+      );
+
+      // Inisialisasi video Hazel Moore part 1 (silent)
+      initHlsVideoSilent(
+        'hlsVideoHazel',
+        'https://t59.pcloud.com/cWZ54SkFX7ZskoqAP7ZZZ9xFD5kZQ5ZZWFXZZTv1KfZjmZOMZQmZv8ZlMZhFZtzZZETZwTZ4HZ8LZAMZInZkzZZHUQK5Z2by3W3B7C6zh0gK5nMQeipHT7Wfk/master.m3u8'
+      );
+    });
   </script>
 </body>
-  </html>
+</html>

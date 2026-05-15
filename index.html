@@ -36,6 +36,12 @@
       max-width: 100%;
     }
 
+    /* [FIX #2] Hapus frameborder/scrolling deprecated, gunakan CSS */
+    iframe {
+      border: none;
+      overflow: hidden;
+    }
+
     header {
       text-align: center;
       padding: 30px 16px 20px;
@@ -139,10 +145,9 @@
     .video-container iframe {
       width: 100%;
       height: 100%;
-      border: none;
     }
 
-    /* Responsive iframe untuk Streamtape */
+    /* Responsive iframe untuk Streamtape, pCloud, dll */
     .video-container.responsive-iframe {
       height: auto;
       aspect-ratio: 16 / 9;
@@ -196,10 +201,11 @@
       max-width: 92vw;
       max-height: 88vh;
       border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       object-fit: contain;
     }
 
+    /* [FIX #3] Styling untuk button modal-close */
     .modal-close {
       position: absolute;
       top: 15px;
@@ -210,6 +216,10 @@
       font-weight: bold;
       z-index: 1001;
       user-select: none;
+      background: none;
+      border: none;
+      padding: 0;
+      line-height: 1;
     }
 
     .modal-caption {
@@ -220,7 +230,7 @@
       color: #fff;
       font-size: 14px;
       text-align: center;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0, 0, 0, 0.45);
       padding: 8px 12px;
       border-radius: 8px;
       max-width: 90%;
@@ -232,7 +242,7 @@
       left: 20px;
       color: #fff;
       font-size: 14px;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0, 0, 0, 0.45);
       padding: 8px 12px;
       border-radius: 8px;
       z-index: 1001;
@@ -242,7 +252,7 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255,255,255,0.15);
+      background: rgba(255, 255, 255, 0.15);
       color: white;
       border: none;
       width: 48px;
@@ -256,7 +266,7 @@
     }
 
     .modal-nav:hover {
-      background: rgba(255,255,255,0.28);
+      background: rgba(255, 255, 255, 0.28);
     }
 
     .modal-prev {
@@ -299,13 +309,16 @@
   </header>
 
   <main>
-    <section class="filters">
+    <!-- [FIX #1] Ganti <section> → <nav> untuk filters -->
+    <nav class="filters" aria-label="Filter kategori galeri">
       <button type="button" class="filter-btn active" data-filter="all">Semua</button>
       <button type="button" class="filter-btn" data-filter="VideoNganu">VideoNganu</button>
       <button type="button" class="filter-btn" data-filter="cosplayer">Cosplayer</button>
-    </section>
+    </nav>
 
-    <section class="gallery">
+    <!-- [FIX #1] Tambahkan heading tersembunyi untuk <section> -->
+    <section class="gallery" aria-label="Galeri konten">
+
       <!-- Video pertama di kategori VideoNganu -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
@@ -329,13 +342,12 @@
       </div>
 
       <!-- Video embed iframe -->
+      <!-- [FIX #2] Hapus frameborder dan scrolling deprecated -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
           <iframe
             src="https://abyssplayer.com/1UTPa1UcY"
             title="Embed Video Player"
-            frameborder="0"
-            scrolling="0"
             loading="lazy"
             allowfullscreen>
           </iframe>
@@ -350,7 +362,6 @@
             id="hlsVideoTolong"
             controls
             playsinline
-            crossorigin="anonymous"
             preload="metadata"
             poster="https://via.placeholder.com/400x300?text=Memuat+video...">
           </video>
@@ -365,7 +376,6 @@
             id="hlsVideoHazel"
             controls
             playsinline
-            crossorigin="anonymous"
             preload="metadata"
             poster="https://via.placeholder.com/400x300?text=Hazel+Moore+-+Streaming">
           </video>
@@ -374,18 +384,32 @@
       </div>
 
       <!-- Video BARU: Hazel Moore part 2 (Embed Streamtape) -->
+      <!-- [FIX #2] Hapus frameborder deprecated -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container responsive-iframe">
           <iframe
             src="https://streamtape.com/e/KLqp2j77zqu0e94"
             title="Hazel Moore part 2"
-            frameborder="0"
             loading="lazy"
             allowfullscreen
             allow="autoplay">
           </iframe>
         </div>
         <p>Hazel Moore part 2</p>
+      </div>
+
+      <!-- Video pCloud embed -->
+      <!-- [FIX #2 & #4] Hapus frameborder deprecated, tambah title -->
+      <div class="photo-card" data-category="VideoNganu">
+        <div class="video-container responsive-iframe">
+          <iframe
+            src="https://u.pcloud.link/publink/show?code=XZdD2C5ZsIUF3kjzSr8YVzDG8BXMgSoiRPPV"
+            title="Embed Video pCloud"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+        <p>Embed Video pCloud</p>
       </div>
 
       <!-- Cosplayer -->
@@ -494,25 +518,29 @@
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2657.jpg" alt="Cosplayer 22" loading="lazy">
         <p>Cosplayer 22</p>
       </div>
+
     </section>
   </main>
 
+  <!-- [FIX #9] Footer konsisten dengan title -->
   <footer>
-    &copy; 2026 PhotoGallery. All rights reserved.
+    &copy; 2026 GalleryFahmi. All rights reserved.
   </footer>
 
-  <div class="modal" id="imageModal" onclick="handleBackdropClick(event)">
-    <span class="modal-close" onclick="closeModal()">&times;</span>
+  <!-- [FIX #3] Ganti <span> → <button> untuk modal-close, tambah aria-label -->
+  <!-- [FIX #7] Gunakan placeholder 1x1 transparan untuk src agar tidak request halaman sendiri -->
+  <div class="modal" id="imageModal" role="dialog" aria-modal="true" aria-label="Pratinjau gambar">
+    <button class="modal-close" onclick="closeModal()" aria-label="Tutup pratinjau">&times;</button>
     <div class="modal-counter" id="modalCounter">1 / 1</div>
 
-    <button class="modal-nav modal-prev" onclick="prevImage(event)" aria-label="Sebelumnya">❮</button>
+    <button class="modal-nav modal-prev" onclick="prevImage(event)" aria-label="Gambar sebelumnya">&#10094;</button>
 
     <div class="modal-content">
-      <img id="modalImage" src="" alt="Preview Full Size">
+      <img id="modalImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Preview Full Size">
       <div class="modal-caption" id="modalCaption"></div>
     </div>
 
-    <button class="modal-nav modal-next" onclick="nextImage(event)" aria-label="Berikutnya">❯</button>
+    <button class="modal-nav modal-next" onclick="nextImage(event)" aria-label="Gambar berikutnya">&#10095;</button>
   </div>
 
   <script>
@@ -524,16 +552,16 @@
     }
 
     function setActiveFilterButton(category) {
-      document.querySelectorAll('.filter-btn').forEach(btn => {
+      document.querySelectorAll('.filter-btn').forEach(function(btn) {
         btn.classList.toggle('active', btn.dataset.filter === category);
       });
     }
 
     function filterGallery(category) {
-      const items = document.querySelectorAll('.photo-card');
+      var items = document.querySelectorAll('.photo-card');
 
-      items.forEach(item => {
-        const itemCategory = item.getAttribute('data-category');
+      items.forEach(function(item) {
+        var itemCategory = item.getAttribute('data-category');
         if (category === 'all' || itemCategory === category) {
           item.classList.remove('hidden');
         } else {
@@ -544,7 +572,8 @@
       visibleImages = getVisibleImages();
       setActiveFilterButton(category);
 
-      const modal = document.getElementById('imageModal');
+      // [FIX #6] Tutup modal jika tidak ada gambar yang visible
+      var modal = document.getElementById('imageModal');
       if (modal.classList.contains('show')) {
         if (!visibleImages.length) {
           closeModal();
@@ -561,7 +590,7 @@
 
       if (currentIndex === -1 || !visibleImages.length) return;
 
-      const modal = document.getElementById('imageModal');
+      var modal = document.getElementById('imageModal');
       modal.classList.add('show');
       document.body.style.overflow = 'hidden';
 
@@ -569,21 +598,21 @@
     }
 
     function updateModalImage() {
-      const modalImg = document.getElementById('modalImage');
-      const caption = document.getElementById('modalCaption');
-      const counter = document.getElementById('modalCounter');
+      var modalImg = document.getElementById('modalImage');
+      var caption = document.getElementById('modalCaption');
+      var counter = document.getElementById('modalCounter');
 
       if (!visibleImages.length) return;
 
-      const currentImg = visibleImages[currentIndex];
+      var currentImg = visibleImages[currentIndex];
       modalImg.src = currentImg.src;
       modalImg.alt = currentImg.alt;
       caption.textContent = currentImg.alt;
-      counter.textContent = `${currentIndex + 1} / ${visibleImages.length}`;
+      counter.textContent = (currentIndex + 1) + ' / ' + visibleImages.length;
     }
 
     function closeModal() {
-      const modal = document.getElementById('imageModal');
+      var modal = document.getElementById('imageModal');
       modal.classList.remove('show');
       document.body.style.overflow = '';
     }
@@ -609,24 +638,29 @@
     }
 
     function initImageModalClicks() {
-      const images = document.querySelectorAll('.photo-card img');
-      images.forEach(img => {
-        img.addEventListener('click', () => openModal(img));
+      var images = document.querySelectorAll('.photo-card img');
+      images.forEach(function(img) {
+        img.addEventListener('click', function() {
+          openModal(img);
+        });
       });
     }
 
     function initFilterButtons() {
-      const buttons = document.querySelectorAll('.filter-btn');
-      buttons.forEach(button => {
-        button.addEventListener('click', () => {
+      var buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
           filterGallery(button.dataset.filter);
         });
       });
     }
 
+    // [FIX #6] Tambahkan onclick di modal backdrop via JS juga
+    document.getElementById('imageModal').addEventListener('click', handleBackdropClick);
+
     document.addEventListener('keydown', function(event) {
-      const modal = document.getElementById('imageModal');
-      const isOpen = modal.classList.contains('show');
+      var modal = document.getElementById('imageModal');
+      var isOpen = modal.classList.contains('show');
 
       if (!isOpen || !visibleImages.length) return;
 
@@ -643,11 +677,11 @@
 
     // Fungsi untuk menginisialisasi video HLS tanpa menampilkan error ke user
     function initHlsVideoSilent(videoId, streamUrl) {
-      const videoElement = document.getElementById(videoId);
+      var videoElement = document.getElementById(videoId);
       if (!videoElement) return false;
 
       if (window.Hls && Hls.isSupported()) {
-        const hls = new Hls({
+        var hls = new Hls({
           debug: false,
           enableWorker: true,
           maxBufferLength: 30,
@@ -658,23 +692,23 @@
         hls.attachMedia(videoElement);
 
         hls.on(Hls.Events.MANIFEST_PARSED, function() {
-          console.log(`HLS: ${videoId} manifest berhasil diparsing`);
+          console.log('HLS: ' + videoId + ' manifest berhasil diparsing');
           videoElement.controls = true;
         });
 
         hls.on(Hls.Events.ERROR, function(event, data) {
-          console.error(`HLS Error (${videoId}):`, data);
+          console.error('HLS Error (' + videoId + '):', data);
         });
 
         return true;
       } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
         videoElement.src = streamUrl;
         videoElement.addEventListener('error', function(e) {
-          console.error(`Native HLS error (${videoId}):`, e);
+          console.error('Native HLS error (' + videoId + '):', e);
         });
         return true;
       } else {
-        console.warn(`Browser tidak mendukung HLS untuk ${videoId}`);
+        console.warn('Browser tidak mendukung HLS untuk ' + videoId);
         return false;
       }
     }

@@ -111,6 +111,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
     .video-container video {
@@ -123,6 +124,34 @@
       width: 100%;
       height: 100%;
       border: none;
+    }
+
+    .video-error-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      color: #ff8888;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 14px;
+      padding: 16px;
+      z-index: 5;
+      backdrop-filter: blur(4px);
+    }
+
+    .video-error-overlay span {
+      background: #ff4444;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 30px;
+      margin-top: 12px;
+      font-size: 12px;
     }
 
     .photo-card p {
@@ -260,7 +289,7 @@
       }
     }
   </style>
-  <!-- HLS.js untuk memutar streaming .m3u8 -->
+  <!-- HLS.js untuk streaming .m3u8 -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
@@ -290,7 +319,7 @@
         <p>Sneaky Smash At The Birthday Bash – PornXP_1</p>
       </div>
 
-      <!-- Video kedua yang baru ditambahkan: Hanna Hays Cum4k -->
+      <!-- Video kedua: Hanna Hays Cum4k -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
           <video controls poster="https://via.placeholder.com/400x300?text=Hanna+Hays+Cum4k">
@@ -301,7 +330,7 @@
         <p>Hanna Hays Cum4k</p>
       </div>
 
-      <!-- Video embed iframe yang diminta user -->
+      <!-- Video embed iframe -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
           <iframe src="https://abyssplayer.com/1UTPa1UcY" frameborder="0" scrolling="0" allowfullscreen></iframe>
@@ -309,12 +338,20 @@
         <p>Embed Video Player</p>
       </div>
 
-      <!-- Video baru: tolong aku tidak bisa di usir (HLS .m3u8) -->
-      <div class="photo-card" data-category="VideoNganu">
-        <div class="video-container">
-          <video id="hlsVideoTolong" controls playsinline poster="https://via.placeholder.com/400x300?text=Tolong+aku+tidak+bisa+di+usir"></video>
+      <!-- Video: tolong aku tidak bisa di usir (HLS .m3u8) -->
+      <div class="photo-card" data-category="VideoNganu" id="cardHlsTolong">
+        <div class="video-container" id="hlsContainerTolong">
+          <video id="hlsVideoTolong" controls playsinline crossorigin="anonymous" poster="https://via.placeholder.com/400x300?text=Memuat+video..."></video>
         </div>
         <p>tolong aku tidak bisa di usir</p>
+      </div>
+
+      <!-- Video BARU: Hazel Moore - Risky Sex With Stepbro In The Room - TittyAttack siska.tv -->
+      <div class="photo-card" data-category="VideoNganu" id="cardHlsHazel">
+        <div class="video-container" id="hlsContainerHazel">
+          <video id="hlsVideoHazel" controls playsinline crossorigin="anonymous" poster="https://via.placeholder.com/400x300?text=Hazel+Moore+-+Streaming"></video>
+        </div>
+        <p>Hazel Moore - Risky Sex With Stepbro In The Room - TittyAttack siska.tv</p>
       </div>
 
       <!-- Cosplayer (tidak berubah) -->
@@ -538,34 +575,92 @@
     // Inisialisasi visibleImages awal
     visibleImages = getVisibleImages();
 
-    // Setup HLS untuk video "tolong aku tidak bisa di usir"
-    (function initHlsVideo() {
-      const videoElement = document.getElementById('hlsVideoTolong');
-      if (!videoElement) return;
-      const hlsUrl = 'https://km-h.phncdn.com/hls/videos/202011/17/370926942/720P_4000K_370926942.mp4/index-v1-a1.m3u8?hdnea=st=1778856282~exp=1778859882~hdl=-1~hmac=c193d841b2fac834e844c14ed553258a12b85cd4';
+    // Fungsi umum untuk menginisialisasi video HLS dengan error handling
+    function initHlsVideo(videoId, containerId, streamUrl, customErrorMessage = null) {
+      const videoElement = document.getElementById(videoId);
+      if (!videoElement) return false;
       
-      // Cek dukungan HLS.js
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(hlsUrl);
-        hls.attachMedia(videoElement);
-        hls.on(Hls.Events.MANIFEST_PARSED, function() {
-          // Video siap diputar, tidak autoplay otomatis agar sesuai kebijakan browser
-          console.log('HLS video siap dimainkan');
-        });
-        hls.on(Hls.Events.ERROR, function (event, data) {
-          console.error('HLS error:', data);
-        });
-      } 
-      // Fallback untuk browser yang mendukung native HLS (Safari)
-      else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-        videoElement.src = hlsUrl;
-      } else {
-        console.warn('HLS tidak didukung di browser ini');
-        // Tampilkan pesan error di poster atau fallback
-        videoElement.poster = 'https://via.placeholder.com/400x300?text=Video+tidak+dapat+diputar';
+      const container = document.getElementById(containerId);
+      
+      function showErrorOverlay(message) {
+        if (!container) return;
+        let overlay = container.querySelector('.video-error-overlay');
+        if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.className = 'video-error-overlay';
+          container.appendChild(overlay);
+        }
+        overlay.innerHTML = `<div style="font-weight:bold;">⚠️ Video gagal diputar</div>
+                             <div style="font-size:12px; margin-top:8px;">${message}</div>
+                             <span>⏱️ Coba segarkan halaman atau periksa link</span>`;
+        videoElement.poster = 'https://via.placeholder.com/400x300?text=Video+Error';
       }
-    })();
+      
+      function removeOverlay() {
+        if (container) {
+          const oldOverlay = container.querySelector('.video-error-overlay');
+          if (oldOverlay) oldOverlay.remove();
+        }
+      }
+      
+      if (Hls.isSupported()) {
+        removeOverlay();
+        const hls = new Hls({
+          debug: false,
+          enableWorker: true,
+          maxBufferLength: 30,
+          startLevel: -1
+        });
+        
+        hls.loadSource(streamUrl);
+        hls.attachMedia(videoElement);
+        
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+          console.log(`HLS: ${videoId} manifest berhasil diparsing`);
+          removeOverlay();
+          videoElement.controls = true;
+        });
+        
+        hls.on(Hls.Events.ERROR, function (event, data) {
+          console.error(`HLS Error (${videoId}):`, data);
+          let errorMsg = customErrorMessage || 'Gagal memuat streaming video. ';
+          if (data.details === 'manifestLoadError' || data.details === 'manifestParsingError') {
+            errorMsg += 'File manifest (.m3u8) tidak dapat diakses. Mungkin token kadaluwarsa.';
+          } else if (data.details === 'fragLoadError') {
+            errorMsg += 'Gagal memuat segmen video. Koneksi atau server bermasalah.';
+          } else {
+            errorMsg += 'Error tidak dikenal. Coba segarkan halaman.';
+          }
+          showErrorOverlay(errorMsg);
+        });
+        
+        return true;
+      } 
+      else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+        removeOverlay();
+        videoElement.src = streamUrl;
+        videoElement.addEventListener('error', function(e) {
+          showErrorOverlay('Video tidak dapat diputar secara native. Mungkin token kadaluwarsa atau CORS.');
+        });
+        return true;
+      } 
+      else {
+        showErrorOverlay('Browser Anda tidak mendukung pemutaran video HLS (streaming .m3u8). Gunakan Chrome, Edge, atau Safari.');
+        return false;
+      }
+    }
+
+    // Inisialisasi video "tolong aku tidak bisa di usir"
+    initHlsVideo('hlsVideoTolong', 'hlsContainerTolong', 
+      'https://km-h.phncdn.com/hls/videos/202011/17/370926942/720P_4000K_370926942.mp4/index-v1-a1.m3u8?hdnea=st=1778856282~exp=1778859882~hdl=-1~hmac=c193d841b2fac834e844c14ed553258a12b85cd4',
+      'Streaming tidak dapat dimuat. '
+    );
+
+    // Inisialisasi video BARU: Hazel Moore
+    initHlsVideo('hlsVideoHazel', 'hlsContainerHazel',
+      'https://t59.pcloud.com/cWZ54SkFX7ZskoqAP7ZZZdyFD5kZQ5ZZWFXZZTv1KfZjmZOMZQmZv8ZlMZhFZtzZVgZETZwTZ4HZ8LZAMZInZkzZZHUQK5ZCmEJf3WyMAyhrc1GjU9FW4ad6bI7/v2v0/index.m3u8',
+      'Gagal memuat video Hazel Moore. '
+    );
   </script>
 </body>
-</html>
+          </html>

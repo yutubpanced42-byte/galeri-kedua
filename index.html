@@ -112,12 +112,6 @@
       aspect-ratio: 1 / 1;
     }
 
-    .photo-card:has(.video-container) .video-container video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
     .photo-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -141,18 +135,13 @@
 
     .video-container {
       width: 100%;
-      height: 300px;
       background: #000;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-    }
-
-    .video-container {
-      aspect-ratio: 1 / 1 !important;
-      height: auto !important;
+      aspect-ratio: 1 / 1;
     }
 
     .video-container video {
@@ -168,9 +157,7 @@
     }
 
     .video-container.responsive-iframe {
-      height: auto;
       aspect-ratio: 1 / 1;
-      background: #000;
     }
 
     .photo-card p {
@@ -188,7 +175,9 @@
       margin-top: 30px;
     }
 
-    .hidden { display: none !important; }
+    .hidden {
+      display: none !important;
+    }
 
     .modal {
       display: none;
@@ -201,7 +190,9 @@
       padding: 20px;
     }
 
-    .modal.show { display: flex; }
+    .modal.show {
+      display: flex;
+    }
 
     .modal-content {
       position: relative;
@@ -229,11 +220,8 @@
       cursor: pointer;
       font-weight: bold;
       z-index: 1001;
-      user-select: none;
       background: none;
       border: none;
-      padding: 0;
-      line-height: 1;
     }
 
     .modal-caption {
@@ -274,13 +262,7 @@
       border-radius: 50%;
       font-size: 24px;
       cursor: pointer;
-      backdrop-filter: blur(2px);
-      transition: 0.2s;
       z-index: 1001;
-    }
-
-    .modal-nav:hover {
-      background: rgba(255, 255, 255, 0.28);
     }
 
     .modal-prev { left: 20px; }
@@ -290,19 +272,6 @@
       .photo-card img,
       .video-container:not(.responsive-iframe) {
         height: 260px;
-      }
-      .video-container {
-        height: auto !important;
-      }
-      .modal-nav {
-        width: 42px;
-        height: 42px;
-        font-size: 20px;
-      }
-      .modal-counter {
-        top: 16px;
-        left: 16px;
-        font-size: 13px;
       }
     }
   </style>
@@ -326,39 +295,43 @@
 
     <section class="gallery" aria-label="Galeri konten">
 
-      <!-- Video pertama -->
+      <!-- VideoNganu -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
           <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Video+Preview">
             <source src="https://6a04a73c46fc04f7c2e1d496.imgix.net/Sneaky%20Smash%20At%20The%20Birthday%20Bash%20%E2%80%93%20PornXP_1.mp4" type="video/mp4">
-            Browser tidak mendukung video.
           </video>
         </div>
         <p>Sneaky Smash At The Birthday Bash – PornXP_1</p>
       </div>
 
-      <!-- Video kedua -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
           <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Hanna+Hays+Cum4k">
             <source src="https://6a04d6a146fc04f7c2e1d8c4.imgix.net/1000139601.mp4" type="video/mp4">
-            Browser tidak mendukung video.
           </video>
         </div>
         <p>Hanna Hays Cum4k</p>
       </div>
 
-      <!-- pCloud embed dengan nama baru -->
+      <!-- pCloud Lama -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container responsive-iframe">
-          <iframe
-            src="https://u.pcloud.link/publink/show?code=XZdD2C5ZsIUF3kjzSr8YVzDG8BXMgSoiRPPV"
-            title="Shes Nothing Butt Gamer Anal Trouble free full length XXX video by Brazzers porn"
-            allowfullscreen
-            loading="lazy">
-          </iframe>
+          <iframe src="https://u.pcloud.link/publink/show?code=XZdD2C5ZsIUF3kjzSr8YVzDG8BXMgSoiRPPV" 
+                  title="Shes Nothing Butt Gamer Anal Trouble free full length XXX video by Brazzers porn"
+                  allowfullscreen loading="lazy"></iframe>
         </div>
         <p>Shes Nothing Butt Gamer Anal Trouble free full length XXX video by Brazzers porn</p>
+      </div>
+
+      <!-- pCloud Baru -->
+      <div class="photo-card" data-category="VideoNganu">
+        <div class="video-container responsive-iframe">
+          <iframe src="https://u.pcloud.link/publink/show?code=XZWIBU5Zcd9UH9b93UHkTuCKAyJH14ViQjy0" 
+                  title="My Bros Geeky GF Does Anal"
+                  allowfullscreen loading="lazy"></iframe>
+        </div>
+        <p>My Bros Geeky GF Does Anal</p>
       </div>
 
       <!-- Cosplayer -->
@@ -366,102 +339,82 @@
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_1.jpg" alt="Cosplayer 1" loading="lazy">
         <p>Cosplayer 1</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_2.jpg" alt="Cosplayer 2" loading="lazy">
         <p>Cosplayer 2</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_3.jpg" alt="Cosplayer 3" loading="lazy">
         <p>Cosplayer 3</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_4.jpg" alt="Cosplayer 4" loading="lazy">
         <p>Cosplayer 4</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_5.jpg" alt="Cosplayer 5" loading="lazy">
         <p>Cosplayer 5</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_6.jpg" alt="Cosplayer 6" loading="lazy">
         <p>Cosplayer 6</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_7.jpg" alt="Cosplayer 7" loading="lazy">
         <p>Cosplayer 7</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_9.jpg" alt="Cosplayer 9" loading="lazy">
         <p>Cosplayer 9</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_10.jpg" alt="Cosplayer 10" loading="lazy">
         <p>Cosplayer 10</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_11.jpg" alt="Cosplayer 11" loading="lazy">
         <p>Cosplayer 11</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_12.jpg" alt="Cosplayer 12" loading="lazy">
         <p>Cosplayer 12</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_13.jpg" alt="Cosplayer 13" loading="lazy">
         <p>Cosplayer 13</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_14.jpg" alt="Cosplayer 14" loading="lazy">
         <p>Cosplayer 14</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_15.jpg" alt="Cosplayer 15" loading="lazy">
         <p>Cosplayer 15</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_16.jpg" alt="Cosplayer 16" loading="lazy">
         <p>Cosplayer 16</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2652.jpg" alt="Cosplayer 17" loading="lazy">
         <p>Cosplayer 17</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2653.jpg" alt="Cosplayer 18" loading="lazy">
         <p>Cosplayer 18</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2654.jpg" alt="Cosplayer 19" loading="lazy">
         <p>Cosplayer 19</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2655.jpg" alt="Cosplayer 20" loading="lazy">
         <p>Cosplayer 20</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2656.jpg" alt="Cosplayer 21" loading="lazy">
         <p>Cosplayer 21</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2657.jpg" alt="Cosplayer 22" loading="lazy">
         <p>Cosplayer 22</p>
@@ -497,16 +450,14 @@
     }
 
     function setActiveFilterButton(category) {
-      document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.filter === category);
       });
     }
 
     function filterGallery(category) {
-      var items = document.querySelectorAll('.photo-card');
-
-      items.forEach(function(item) {
-        var itemCategory = item.getAttribute('data-category');
+      document.querySelectorAll('.photo-card').forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
         if (category === 'all' || itemCategory === category) {
           item.classList.remove('hidden');
         } else {
@@ -516,37 +467,24 @@
 
       visibleImages = getVisibleImages();
       setActiveFilterButton(category);
-
-      var modal = document.getElementById('imageModal');
-      if (modal.classList.contains('show')) {
-        if (!visibleImages.length) {
-          closeModal();
-        } else {
-          currentIndex = 0;
-          updateModalImage();
-        }
-      }
     }
 
     function openModal(img) {
       visibleImages = getVisibleImages();
       currentIndex = visibleImages.indexOf(img);
-      if (currentIndex === -1 || !visibleImages.length) return;
+      if (currentIndex === -1) return;
 
-      var modal = document.getElementById('imageModal');
-      modal.classList.add('show');
+      document.getElementById('imageModal').classList.add('show');
       document.body.style.overflow = 'hidden';
       updateModalImage();
     }
 
     function updateModalImage() {
-      var modalImg = document.getElementById('modalImage');
-      var caption = document.getElementById('modalCaption');
-      var counter = document.getElementById('modalCounter');
+      const modalImg = document.getElementById('modalImage');
+      const caption = document.getElementById('modalCaption');
+      const counter = document.getElementById('modalCounter');
 
-      if (!visibleImages.length) return;
-
-      var currentImg = visibleImages[currentIndex];
+      const currentImg = visibleImages[currentIndex];
       modalImg.src = currentImg.src;
       modalImg.alt = currentImg.alt;
       caption.textContent = currentImg.alt;
@@ -554,81 +492,49 @@
     }
 
     function closeModal() {
-      var modal = document.getElementById('imageModal');
-      modal.classList.remove('show');
+      document.getElementById('imageModal').classList.remove('show');
       document.body.style.overflow = '';
     }
 
-    function prevImage(event) {
-      event.stopPropagation();
-      if (!visibleImages.length) return;
+    function prevImage(e) {
+      e.stopPropagation();
       currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
       updateModalImage();
     }
 
-    function nextImage(event) {
-      event.stopPropagation();
-      if (!visibleImages.length) return;
+    function nextImage(e) {
+      e.stopPropagation();
       currentIndex = (currentIndex + 1) % visibleImages.length;
       updateModalImage();
     }
 
-    function handleBackdropClick(event) {
-      if (event.target.id === 'imageModal') closeModal();
-    }
-
     function initImageModalClicks() {
-      document.querySelectorAll('.photo-card img').forEach(function(img) {
-        img.addEventListener('click', function() { openModal(img); });
+      document.querySelectorAll('.photo-card img').forEach(img => {
+        img.addEventListener('click', () => openModal(img));
       });
     }
 
     function initFilterButtons() {
-      document.querySelectorAll('.filter-btn').forEach(function(button) {
-        button.addEventListener('click', function() {
-          filterGallery(button.dataset.filter);
-        });
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => filterGallery(btn.dataset.filter));
       });
     }
 
-    document.getElementById('imageModal').addEventListener('click', handleBackdropClick);
-
-    document.addEventListener('keydown', function(event) {
-      var modal = document.getElementById('imageModal');
-      if (!modal.classList.contains('show') || !visibleImages.length) return;
-
-      if (event.key === 'Escape') {
-        closeModal();
-      } else if (event.key === 'ArrowLeft') {
-        currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
-        updateModalImage();
-      } else if (event.key === 'ArrowRight') {
-        currentIndex = (currentIndex + 1) % visibleImages.length;
-        updateModalImage();
-      }
-    });
-
-    function initHlsVideoSilent(videoId, streamUrl) {
-      var videoElement = document.getElementById(videoId);
-      if (!videoElement) return false;
-
-      if (window.Hls && Hls.isSupported()) {
-        var hls = new Hls({ debug: false, enableWorker: true, maxBufferLength: 30, startLevel: -1 });
-        hls.loadSource(streamUrl);
-        hls.attachMedia(videoElement);
-        return true;
-      } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-        videoElement.src = streamUrl;
-        return true;
-      }
-      return false;
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', () => {
       initFilterButtons();
       initImageModalClicks();
       visibleImages = getVisibleImages();
     });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('imageModal');
+      if (!modal.classList.contains('show')) return;
+      
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft') prevImage(e);
+      if (e.key === 'ArrowRight') nextImage(e);
+    });
   </script>
 </body>
-</html>
+          </html>

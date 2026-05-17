@@ -1,320 +1,766 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeri Foto & Video</title>
-    <style>
-        /* ===== RESET ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GalleryFahmi</title>
 
-        /* ===== BODY & CONTAINER ===== */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --card: #fff;
+      --text: #222;
+      --muted: #666;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --border: #e5e7eb;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        /* ===== HEADER ===== */
-        header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-            animation: fadeInDown 1s ease;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
 
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
+    img,
+    video,
+    iframe {
+      display: block;
+      max-width: 100%;
+    }
 
-        /* ===== FILTER BUTTONS ===== */
-        .filter-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            animation: fadeIn 1.2s ease;
-        }
+    /* [FIX #2] Hapus frameborder/scrolling deprecated, gunakan CSS */
+    iframe {
+      border: none;
+      overflow: hidden;
+    }
 
-        .filter-btn {
-            padding: 12px 30px;
-            border: none;
-            background: white;
-            color: #667eea;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    header {
+      text-align: center;
+      padding: 30px 16px 20px;
+    }
 
-        .filter-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            background: #667eea;
-            color: white;
-        }
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
 
-        .filter-btn.active {
-            background: #667eea;
-            color: white;
-            transform: scale(1.1);
-        }
+    header h2 {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
 
-        /* ===== GALLERY ===== */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            padding: 20px 0;
-        }
+    header p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
 
-        /* ===== GALLERY ITEMS ===== */
-        .gallery-item {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            opacity: 0;
-            transform: scale(0.8) translateY(30px);
-            animation: itemFadeIn 0.6s ease forwards;
-        }
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 16px 32px;
+    }
 
-        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
-        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
-        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
-        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
-        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
-        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
-        .gallery-item:nth-child(n+7) { animation-delay: 0.7s; }
+    .filters {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0 28px;
+    }
 
-        .gallery-item:hover {
-            transform: translateY(-10px) scale(1.05) rotate(2deg);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
+    .filters button {
+      border: none;
+      background: var(--primary);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
 
-        .gallery-item.hide {
-            animation: itemFadeOut 0.4s ease forwards;
-        }
+    .filters button:hover {
+      opacity: 0.92;
+    }
 
-        .gallery-item img,
-        .gallery-item video {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+    .filters button.active {
+      background: var(--primary-dark);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
 
-        .gallery-item:hover img,
-        .gallery-item:hover video {
-            transform: scale(1.1);
-        }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
 
-        /* ===== ITEM INFO ===== */
-        .item-info {
-            padding: 15px;
-            background: linear-gradient(to bottom, white, #f8f9fa);
-        }
+    /* Video cards: 1 per baris, full width */
+    .photo-card:has(.video-container) {
+      grid-column: 1 / -1;
+      max-width: 700px;
+      margin: 0 auto;
+      width: 100%;
+    }
 
-        .item-title {
-            font-size: 1.2em;
-            color: #333;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
+    /* --- PERUBAHAN: Aspect ratio video menjadi 1:1 --- */
+    .photo-card:has(.video-container) .video-container {
+      height: auto;
+      aspect-ratio: 1 / 1; /* sebelumnya 16/9 */
+    }
 
-        .item-category {
-            display: inline-block;
-            padding: 5px 15px;
-            background: #667eea;
-            color: white;
-            border-radius: 15px;
-            font-size: 0.85em;
-            animation: pulse 2s infinite;
-        }
+    .photo-card:has(.video-container) .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
 
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .photo-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+    .photo-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      background: #ddd;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
 
-        @keyframes itemFadeIn {
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
+    .photo-card img:hover {
+      transform: scale(1.02);
+    }
 
-        @keyframes itemFadeOut {
-            to {
-                opacity: 0;
-                transform: scale(0.8) translateY(30px);
-            }
-        }
+    .video-container {
+      width: 100%;
+      height: 300px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
-            }
-            50% {
-                box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
-            }
-        }
+    /* PERUBAHAN: video biasa juga jadi 1:1 (override height) */
+    .video-container {
+      aspect-ratio: 1 / 1 !important;
+      height: auto !important;
+    }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-            
-            .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 15px;
-            }
-        }
-    </style>
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .video-container iframe {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Responsive iframe untuk Streamtape, pCloud, dll - juga 1:1 */
+    .video-container.responsive-iframe {
+      height: auto;
+      aspect-ratio: 1 / 1; /* sebelumnya 16/9 */
+      background: #000;
+    }
+
+    .photo-card p {
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 16px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+      margin-top: 30px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 100%;
+      max-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal img {
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      object-fit: contain;
+    }
+
+    /* [FIX #3] Styling untuk button modal-close */
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 36px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 1001;
+      user-select: none;
+      background: none;
+      border: none;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .modal-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 90%;
+    }
+
+    .modal-counter {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #fff;
+      font-size: 14px;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 8px 12px;
+      border-radius: 8px;
+      z-index: 1001;
+    }
+
+    .modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      backdrop-filter: blur(2px);
+      transition: 0.2s;
+      z-index: 1001;
+    }
+
+    .modal-nav:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .modal-prev {
+      left: 20px;
+    }
+
+    .modal-next {
+      right: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .photo-card img,
+      .video-container:not(.responsive-iframe) {
+        height: 260px;
+      }
+
+      /* Jangan override aspect-ratio di mobile biar tetap 1:1 */
+      .video-container {
+        height: auto !important;
+      }
+
+      .modal-nav {
+        width: 42px;
+        height: 42px;
+        font-size: 20px;
+      }
+
+      .modal-counter {
+        top: 16px;
+        left: 16px;
+        font-size: 13px;
+      }
+    }
+  </style>
+
+  <!-- HLS.js untuk streaming .m3u8 -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎬 Galeri Foto & Video 📸</h1>
-            <p>Kumpulan konten menarik untuk Anda</p>
-        </header>
+  <header>
+    <h1>GalleryFahmi</h1>
+    <h2>Photo Gallery</h2>
+    <p>Galeri Foto</p>
+    <p>Pilih kategori untuk melihat koleksi foto.</p>
+  </header>
 
-        <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">Semua</button>
-            <button class="filter-btn" data-filter="VideoNganu">VideoNganu</button>
-            <button class="filter-btn" data-filter="Cosplayer">Cosplayer</button>
+  <main>
+    <!-- [FIX #1] Ganti <section> → <nav> untuk filters -->
+    <nav class="filters" aria-label="Filter kategori galeri">
+      <button type="button" class="filter-btn active" data-filter="all">Semua</button>
+      <button type="button" class="filter-btn" data-filter="VideoNganu">VideoNganu</button>
+      <button type="button" class="filter-btn" data-filter="cosplayer">Cosplayer</button>
+    </nav>
+
+    <!-- [FIX #1] Tambahkan heading tersembunyi untuk <section> -->
+    <section class="gallery" aria-label="Galeri konten">
+
+      <!-- Video pertama di kategori VideoNganu -->
+      <div class="photo-card" data-category="VideoNganu">
+        <div class="video-container">
+          <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Video+Preview">
+            <source src="https://6a04a73c46fc04f7c2e1d496.imgix.net/Sneaky%20Smash%20At%20The%20Birthday%20Bash%20%E2%80%93%20PornXP_1.mp4" type="video/mp4">
+            Browser tidak mendukung video.
+          </video>
         </div>
+        <p>Sneaky Smash At The Birthday Bash – PornXP_1</p>
+      </div>
 
-        <div class="gallery" id="gallery">
-            <!-- Video Items -->
-            <div class="gallery-item" data-category="VideoNganu">
-                <video controls>
-                    <source src="video1.mp4" type="video/mp4">
-                    Browser Anda tidak mendukung tag video.
-                </video>
-                <div class="item-info">
-                    <div class="item-title">Video Nganu 1</div>
-                    <span class="item-category">VideoNganu</span>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="VideoNganu">
-                <video controls>
-                    <source src="video2.mp4" type="video/mp4">
-                    Browser Anda tidak mendukung tag video.
-                </video>
-                <div class="item-info">
-                    <div class="item-title">Video Nganu 2</div>
-                    <span class="item-category">VideoNganu</span>
-                </div>
-            </div>
-
-            <!-- Cosplayer Photos -->
-            <div class="gallery-item" data-category="Cosplayer">
-                <img src="cosplay1.jpg" alt="Cosplayer 1">
-                <div class="item-info">
-                    <div class="item-title">Cosplayer 1</div>
-                    <span class="item-category">Cosplayer</span>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="Cosplayer">
-                <img src="cosplay2.jpg" alt="Cosplayer 2">
-                <div class="item-info">
-                    <div class="item-title">Cosplayer 2</div>
-                    <span class="item-category">Cosplayer</span>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="Cosplayer">
-                <img src="cosplay3.jpg" alt="Cosplayer 3">
-                <div class="item-info">
-                    <div class="item-title">Cosplayer 3</div>
-                    <span class="item-category">Cosplayer</span>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="Cosplayer">
-                <img src="cosplay4.jpg" alt="Cosplayer 4">
-                <div class="item-info">
-                    <div class="item-title">Cosplayer 4</div>
-                    <span class="item-category">Cosplayer</span>
-                </div>
-            </div>
+      <!-- Video kedua: Hanna Hays Cum4k -->
+      <div class="photo-card" data-category="VideoNganu">
+        <div class="video-container">
+          <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Hanna+Hays+Cum4k">
+            <source src="https://6a04d6a146fc04f7c2e1d8c4.imgix.net/1000139601.mp4" type="video/mp4">
+            Browser tidak mendukung video.
+          </video>
         </div>
+        <p>Hanna Hays Cum4k</p>
+      </div>
+
+      <!-- Video embed iframe -->
+      <!-- [FIX #2] Hapus frameborder dan scrolling deprecated -->
+      <div class="photo-card" data-category="VideoNganu">
+        <div class="video-container">
+          <iframe
+            src="https://abyssplayer.com/1UTPa1UcY"
+            title="Embed Video Player"
+            loading="lazy"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p>Embed Video Player</p>
+      </div>
+
+      <!-- Video: tolong aku tidak bisa di usir (HLS .m3u8) -->
+      <div class="photo-card" data-category="VideoNganu" id="cardHlsTolong">
+        <div class="video-container" id="hlsContainerTolong">
+          <video
+            id="hlsVideoTolong"
+            controls
+            playsinline
+            preload="metadata"
+            poster="https://via.placeholder.com/400x300?text=Memuat+video...">
+          </video>
+        </div>
+        <p>tolong aku tidak bisa di usir</p>
+      </div>
+
+      <!-- Video Hazel Moore part 1 (link HLS) -->
+      <div class="photo-card" data-category="VideoNganu" id="cardHlsHazel">
+        <div class="video-container" id="hlsContainerHazel">
+          <video
+            id="hlsVideoHazel"
+            controls
+            playsinline
+            preload="metadata"
+            poster="https://via.placeholder.com/400x300?text=Hazel+Moore+-+Streaming">
+          </video>
+        </div>
+        <p>Hazel Moore - Risky Sex With Stepbro In The Room - TittyAttack siska.tv</p>
+      </div>
+
+      <!-- Video BARU: Hazel Moore part 2 (Embed Streamtape) -->
+      <!-- [FIX #2] Hapus frameborder deprecated -->
+      <div class="photo-card" data-category="VideoNganu">
+        <div class="video-container responsive-iframe">
+          <iframe
+            src="https://streamtape.com/e/KLqp2j77zqu0e94"
+            title="Hazel Moore part 2"
+            loading="lazy"
+            allowfullscreen
+            allow="autoplay">
+          </iframe>
+        </div>
+        <p>Hazel Moore part 2</p>
+      </div>
+
+      <!-- Video pCloud embed -->
+      <!-- [FIX #2 & #4] Hapus frameborder deprecated, tambah title -->
+      <div class="photo-card" data-category="VideoNganu">
+        <div class="video-container responsive-iframe">
+          <iframe
+            src="https://u.pcloud.link/publink/show?code=XZdD2C5ZsIUF3kjzSr8YVzDG8BXMgSoiRPPV"
+            title="Embed Video pCloud"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+        <p>Embed Video pCloud</p>
+      </div>
+
+      <!-- Cosplayer -->
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_1.jpg" alt="Cosplayer 1" loading="lazy">
+        <p>Cosplayer 1</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_2.jpg" alt="Cosplayer 2" loading="lazy">
+        <p>Cosplayer 2</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_3.jpg" alt="Cosplayer 3" loading="lazy">
+        <p>Cosplayer 3</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_4.jpg" alt="Cosplayer 4" loading="lazy">
+        <p>Cosplayer 4</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_5.jpg" alt="Cosplayer 5" loading="lazy">
+        <p>Cosplayer 5</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_6.jpg" alt="Cosplayer 6" loading="lazy">
+        <p>Cosplayer 6</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_7.jpg" alt="Cosplayer 7" loading="lazy">
+        <p>Cosplayer 7</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_9.jpg" alt="Cosplayer 9" loading="lazy">
+        <p>Cosplayer 9</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_10.jpg" alt="Cosplayer 10" loading="lazy">
+        <p>Cosplayer 10</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_11.jpg" alt="Cosplayer 11" loading="lazy">
+        <p>Cosplayer 11</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_12.jpg" alt="Cosplayer 12" loading="lazy">
+        <p>Cosplayer 12</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_13.jpg" alt="Cosplayer 13" loading="lazy">
+        <p>Cosplayer 13</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_14.jpg" alt="Cosplayer 14" loading="lazy">
+        <p>Cosplayer 14</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_15.jpg" alt="Cosplayer 15" loading="lazy">
+        <p>Cosplayer 15</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_16.jpg" alt="Cosplayer 16" loading="lazy">
+        <p>Cosplayer 16</p>
+      </div>
+
+      <!-- Foto baru cosplayer 17 - 22 -->
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2652.jpg" alt="Cosplayer 17" loading="lazy">
+        <p>Cosplayer 17</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2653.jpg" alt="Cosplayer 18" loading="lazy">
+        <p>Cosplayer 18</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2654.jpg" alt="Cosplayer 19" loading="lazy">
+        <p>Cosplayer 19</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2655.jpg" alt="Cosplayer 20" loading="lazy">
+        <p>Cosplayer 20</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2656.jpg" alt="Cosplayer 21" loading="lazy">
+        <p>Cosplayer 21</p>
+      </div>
+
+      <div class="photo-card" data-category="cosplayer">
+        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2657.jpg" alt="Cosplayer 22" loading="lazy">
+        <p>Cosplayer 22</p>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- [FIX #9] Footer konsisten dengan title -->
+  <footer>
+    &copy; 2026 GalleryFahmi. All rights reserved.
+  </footer>
+
+  <!-- [FIX #3] Ganti <span> → <button> untuk modal-close, tambah aria-label -->
+  <!-- [FIX #7] Gunakan placeholder 1x1 transparan untuk src agar tidak request halaman sendiri -->
+  <div class="modal" id="imageModal" role="dialog" aria-modal="true" aria-label="Pratinjau gambar">
+    <button class="modal-close" onclick="closeModal()" aria-label="Tutup pratinjau">&times;</button>
+    <div class="modal-counter" id="modalCounter">1 / 1</div>
+
+    <button class="modal-nav modal-prev" onclick="prevImage(event)" aria-label="Gambar sebelumnya">&#10094;</button>
+
+    <div class="modal-content">
+      <img id="modalImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Preview Full Size">
+      <div class="modal-caption" id="modalCaption"></div>
     </div>
 
-    <script>
-        // Filter functionality dengan animasi
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const galleryItems = document.querySelectorAll('.gallery-item');
+    <button class="modal-nav modal-next" onclick="nextImage(event)" aria-label="Gambar berikutnya">&#10095;</button>
+  </div>
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Update active button
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+  <script>
+    let currentIndex = 0;
+    let visibleImages = [];
 
-                const filterValue = btn.getAttribute('data-filter');
+    function getVisibleImages() {
+      return Array.from(document.querySelectorAll('.photo-card:not(.hidden) img'));
+    }
 
-                galleryItems.forEach((item, index) => {
-                    // Reset animation
-                    item.style.animation = 'none';
-                    
-                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                        item.classList.remove('hide');
-                        // Re-trigger animation dengan delay
-                        setTimeout(() => {
-                            item.style.animation = `itemFadeIn 0.6s ease forwards ${index * 0.1}s`;
-                        }, 10);
-                    } else {
-                        item.classList.add('hide');
-                    }
-                });
-            });
+    function setActiveFilterButton(category) {
+      document.querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.filter === category);
+      });
+    }
+
+    function filterGallery(category) {
+      var items = document.querySelectorAll('.photo-card');
+
+      items.forEach(function(item) {
+        var itemCategory = item.getAttribute('data-category');
+        if (category === 'all' || itemCategory === category) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      visibleImages = getVisibleImages();
+      setActiveFilterButton(category);
+
+      // [FIX #6] Tutup modal jika tidak ada gambar yang visible
+      var modal = document.getElementById('imageModal');
+      if (modal.classList.contains('show')) {
+        if (!visibleImages.length) {
+          closeModal();
+        } else {
+          currentIndex = 0;
+          updateModalImage();
+        }
+      }
+    }
+
+    function openModal(img) {
+      visibleImages = getVisibleImages();
+      currentIndex = visibleImages.indexOf(img);
+
+      if (currentIndex === -1 || !visibleImages.length) return;
+
+      var modal = document.getElementById('imageModal');
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+
+      updateModalImage();
+    }
+
+    function updateModalImage() {
+      var modalImg = document.getElementById('modalImage');
+      var caption = document.getElementById('modalCaption');
+      var counter = document.getElementById('modalCounter');
+
+      if (!visibleImages.length) return;
+
+      var currentImg = visibleImages[currentIndex];
+      modalImg.src = currentImg.src;
+      modalImg.alt = currentImg.alt;
+      caption.textContent = currentImg.alt;
+      counter.textContent = (currentIndex + 1) + ' / ' + visibleImages.length;
+    }
+
+    function closeModal() {
+      var modal = document.getElementById('imageModal');
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    function prevImage(event) {
+      event.stopPropagation();
+      if (!visibleImages.length) return;
+      currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
+      updateModalImage();
+    }
+
+    function nextImage(event) {
+      event.stopPropagation();
+      if (!visibleImages.length) return;
+      currentIndex = (currentIndex + 1) % visibleImages.length;
+      updateModalImage();
+    }
+
+    function handleBackdropClick(event) {
+      if (event.target.id === 'imageModal') {
+        closeModal();
+      }
+    }
+
+    function initImageModalClicks() {
+      var images = document.querySelectorAll('.photo-card img');
+      images.forEach(function(img) {
+        img.addEventListener('click', function() {
+          openModal(img);
+        });
+      });
+    }
+
+    function initFilterButtons() {
+      var buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+          filterGallery(button.dataset.filter);
+        });
+      });
+    }
+
+    // [FIX #6] Tambahkan onclick di modal backdrop via JS juga
+    document.getElementById('imageModal').addEventListener('click', handleBackdropClick);
+
+    document.addEventListener('keydown', function(event) {
+      var modal = document.getElementById('imageModal');
+      var isOpen = modal.classList.contains('show');
+
+      if (!isOpen || !visibleImages.length) return;
+
+      if (event.key === 'Escape') {
+        closeModal();
+      } else if (event.key === 'ArrowLeft') {
+        currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
+        updateModalImage();
+      } else if (event.key === 'ArrowRight') {
+        currentIndex = (currentIndex + 1) % visibleImages.length;
+        updateModalImage();
+      }
+    });
+
+    // Fungsi untuk menginisialisasi video HLS tanpa menampilkan error ke user
+    function initHlsVideoSilent(videoId, streamUrl) {
+      var videoElement = document.getElementById(videoId);
+      if (!videoElement) return false;
+
+      if (window.Hls && Hls.isSupported()) {
+        var hls = new Hls({
+          debug: false,
+          enableWorker: true,
+          maxBufferLength: 30,
+          startLevel: -1
         });
 
-        // Parallax effect on scroll
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const header = document.querySelector('header');
-            header.style.transform = `translateY(${scrolled * 0.5}px)`;
-            header.style.opacity = 1 - (scrolled / 500);
+        hls.loadSource(streamUrl);
+        hls.attachMedia(videoElement);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+          console.log('HLS: ' + videoId + ' manifest berhasil diparsing');
+          videoElement.controls = true;
         });
-    </script>
+
+        hls.on(Hls.Events.ERROR, function(event, data) {
+          console.error('HLS Error (' + videoId + '):', data);
+        });
+
+        return true;
+      } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+        videoElement.src = streamUrl;
+        videoElement.addEventListener('error', function(e) {
+          console.error('Native HLS error (' + videoId + '):', e);
+        });
+        return true;
+      } else {
+        console.warn('Browser tidak mendukung HLS untuk ' + videoId);
+        return false;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initFilterButtons();
+      initImageModalClicks();
+      visibleImages = getVisibleImages();
+
+      // Inisialisasi video "tolong aku tidak bisa di usir" (silent)
+      initHlsVideoSilent(
+        'hlsVideoTolong',
+        'https://km-h.phncdn.com/hls/videos/202011/17/370926942/720P_4000K_370926942.mp4/index-v1-a1.m3u8?hdnea=st=1778856282~exp=1778859882~hdl=-1~hmac=c193d841b2fac834e844c14ed553258a12b85cd4'
+      );
+
+      // Inisialisasi video Hazel Moore part 1 (silent)
+      initHlsVideoSilent(
+        'hlsVideoHazel',
+        'https://t59.pcloud.com/cWZ54SkFX7ZskoqAP7ZZZ9xFD5kZQ5ZZWFXZZTv1KfZjmZOMZQmZv8ZlMZhFZtzZZETZwTZ4HZ8LZAMZInZkzZZHUQK5Z2by3W3B7C6zh0gK5nMQeipHT7Wfk/master.m3u8'
+      );
+    });
+  </script>
 </body>
-</html>
+          </html>

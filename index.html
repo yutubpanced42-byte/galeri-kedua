@@ -29,14 +29,11 @@
       line-height: 1.5;
     }
 
-    img,
-    video,
-    iframe {
+    img, video, iframe {
       display: block;
       max-width: 100%;
     }
 
-    /* [FIX #2] Hapus frameborder/scrolling deprecated, gunakan CSS */
     iframe {
       border: none;
       overflow: hidden;
@@ -103,7 +100,6 @@
       gap: 16px;
     }
 
-    /* Video cards: 1 per baris, full width */
     .photo-card:has(.video-container) {
       grid-column: 1 / -1;
       max-width: 700px;
@@ -111,16 +107,9 @@
       width: 100%;
     }
 
-    /* --- PERUBAHAN: Aspect ratio video menjadi 1:1 --- */
     .photo-card:has(.video-container) .video-container {
       height: auto;
-      aspect-ratio: 1 / 1; /* sebelumnya 16/9 */
-    }
-
-    .photo-card:has(.video-container) .video-container video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+      aspect-ratio: 1 / 1;
     }
 
     .photo-card {
@@ -146,19 +135,13 @@
 
     .video-container {
       width: 100%;
-      height: 300px;
       background: #000;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-    }
-
-    /* PERUBAHAN: video biasa juga jadi 1:1 (override height) */
-    .video-container {
-      aspect-ratio: 1 / 1 !important;
-      height: auto !important;
+      aspect-ratio: 1 / 1;
     }
 
     .video-container video {
@@ -173,11 +156,8 @@
       height: 100%;
     }
 
-    /* Responsive iframe untuk Streamtape, pCloud, dll - juga 1:1 */
     .video-container.responsive-iframe {
-      height: auto;
-      aspect-ratio: 1 / 1; /* sebelumnya 16/9 */
-      background: #000;
+      aspect-ratio: 1 / 1;
     }
 
     .photo-card p {
@@ -231,7 +211,6 @@
       object-fit: contain;
     }
 
-    /* [FIX #3] Styling untuk button modal-close */
     .modal-close {
       position: absolute;
       top: 15px;
@@ -241,11 +220,8 @@
       cursor: pointer;
       font-weight: bold;
       z-index: 1001;
-      user-select: none;
       background: none;
       border: none;
-      padding: 0;
-      line-height: 1;
     }
 
     .modal-caption {
@@ -286,49 +262,20 @@
       border-radius: 50%;
       font-size: 24px;
       cursor: pointer;
-      backdrop-filter: blur(2px);
-      transition: 0.2s;
       z-index: 1001;
     }
 
-    .modal-nav:hover {
-      background: rgba(255, 255, 255, 0.28);
-    }
-
-    .modal-prev {
-      left: 20px;
-    }
-
-    .modal-next {
-      right: 20px;
-    }
+    .modal-prev { left: 20px; }
+    .modal-next { right: 20px; }
 
     @media (max-width: 600px) {
       .photo-card img,
       .video-container:not(.responsive-iframe) {
         height: 260px;
       }
-
-      /* Jangan override aspect-ratio di mobile biar tetap 1:1 */
-      .video-container {
-        height: auto !important;
-      }
-
-      .modal-nav {
-        width: 42px;
-        height: 42px;
-        font-size: 20px;
-      }
-
-      .modal-counter {
-        top: 16px;
-        left: 16px;
-        font-size: 13px;
-      }
     }
   </style>
 
-  <!-- HLS.js untuk streaming .m3u8 -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
@@ -340,107 +287,51 @@
   </header>
 
   <main>
-    <!-- [FIX #1] Ganti <section> → <nav> untuk filters -->
     <nav class="filters" aria-label="Filter kategori galeri">
       <button type="button" class="filter-btn active" data-filter="all">Semua</button>
       <button type="button" class="filter-btn" data-filter="VideoNganu">VideoNganu</button>
       <button type="button" class="filter-btn" data-filter="cosplayer">Cosplayer</button>
     </nav>
 
-    <!-- [FIX #1] Tambahkan heading tersembunyi untuk <section> -->
     <section class="gallery" aria-label="Galeri konten">
 
-      <!-- Video pertama di kategori VideoNganu -->
+      <!-- VideoNganu -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
           <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Video+Preview">
             <source src="https://6a04a73c46fc04f7c2e1d496.imgix.net/Sneaky%20Smash%20At%20The%20Birthday%20Bash%20%E2%80%93%20PornXP_1.mp4" type="video/mp4">
-            Browser tidak mendukung video.
           </video>
         </div>
         <p>Sneaky Smash At The Birthday Bash – PornXP_1</p>
       </div>
 
-      <!-- Video kedua: Hanna Hays Cum4k -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container">
           <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Hanna+Hays+Cum4k">
             <source src="https://6a04d6a146fc04f7c2e1d8c4.imgix.net/1000139601.mp4" type="video/mp4">
-            Browser tidak mendukung video.
           </video>
         </div>
         <p>Hanna Hays Cum4k</p>
       </div>
 
-      <!-- Video embed iframe -->
-      <!-- [FIX #2] Hapus frameborder dan scrolling deprecated -->
-      <div class="photo-card" data-category="VideoNganu">
-        <div class="video-container">
-          <iframe
-            src="https://abyssplayer.com/1UTPa1UcY"
-            title="Embed Video Player"
-            loading="lazy"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <p>Embed Video Player</p>
-      </div>
-
-      <!-- Video: tolong aku tidak bisa di usir (HLS .m3u8) -->
-      <div class="photo-card" data-category="VideoNganu" id="cardHlsTolong">
-        <div class="video-container" id="hlsContainerTolong">
-          <video
-            id="hlsVideoTolong"
-            controls
-            playsinline
-            preload="metadata"
-            poster="https://via.placeholder.com/400x300?text=Memuat+video...">
-          </video>
-        </div>
-        <p>tolong aku tidak bisa di usir</p>
-      </div>
-
-      <!-- Video Hazel Moore part 1 (link HLS) -->
-      <div class="photo-card" data-category="VideoNganu" id="cardHlsHazel">
-        <div class="video-container" id="hlsContainerHazel">
-          <video
-            id="hlsVideoHazel"
-            controls
-            playsinline
-            preload="metadata"
-            poster="https://via.placeholder.com/400x300?text=Hazel+Moore+-+Streaming">
-          </video>
-        </div>
-        <p>Hazel Moore - Risky Sex With Stepbro In The Room - TittyAttack siska.tv</p>
-      </div>
-
-      <!-- Video BARU: Hazel Moore part 2 (Embed Streamtape) -->
-      <!-- [FIX #2] Hapus frameborder deprecated -->
+      <!-- pCloud Lama -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container responsive-iframe">
-          <iframe
-            src="https://streamtape.com/e/KLqp2j77zqu0e94"
-            title="Hazel Moore part 2"
-            loading="lazy"
-            allowfullscreen
-            allow="autoplay">
-          </iframe>
+          <iframe src="https://u.pcloud.link/publink/show?code=XZdD2C5ZsIUF3kjzSr8YVzDG8BXMgSoiRPPV" 
+                  title="Shes Nothing Butt Gamer Anal Trouble free full length XXX video by Brazzers porn"
+                  allowfullscreen loading="lazy"></iframe>
         </div>
-        <p>Hazel Moore part 2</p>
+        <p>Shes Nothing Butt Gamer Anal Trouble free full length XXX video by Brazzers porn</p>
       </div>
 
-      <!-- Video pCloud embed -->
-      <!-- [FIX #2 & #4] Hapus frameborder deprecated, tambah title -->
+      <!-- pCloud Baru -->
       <div class="photo-card" data-category="VideoNganu">
         <div class="video-container responsive-iframe">
-          <iframe
-            src="https://u.pcloud.link/publink/show?code=XZdD2C5ZsIUF3kjzSr8YVzDG8BXMgSoiRPPV"
-            title="Embed Video pCloud"
-            allowfullscreen
-            loading="lazy">
-          </iframe>
+          <iframe src="https://u.pcloud.link/publink/show?code=XZWIBU5Zcd9UH9b93UHkTuCKAyJH14ViQjy0" 
+                  title="My Bros Geeky GF Does Anal"
+                  allowfullscreen loading="lazy"></iframe>
         </div>
-        <p>Embed Video pCloud</p>
+        <p>My Bros Geeky GF Does Anal</p>
       </div>
 
       <!-- Cosplayer -->
@@ -448,103 +339,82 @@
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_1.jpg" alt="Cosplayer 1" loading="lazy">
         <p>Cosplayer 1</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_2.jpg" alt="Cosplayer 2" loading="lazy">
         <p>Cosplayer 2</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_3.jpg" alt="Cosplayer 3" loading="lazy">
         <p>Cosplayer 3</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_4.jpg" alt="Cosplayer 4" loading="lazy">
         <p>Cosplayer 4</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_5.jpg" alt="Cosplayer 5" loading="lazy">
         <p>Cosplayer 5</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_6.jpg" alt="Cosplayer 6" loading="lazy">
         <p>Cosplayer 6</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_7.jpg" alt="Cosplayer 7" loading="lazy">
         <p>Cosplayer 7</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_9.jpg" alt="Cosplayer 9" loading="lazy">
         <p>Cosplayer 9</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_10.jpg" alt="Cosplayer 10" loading="lazy">
         <p>Cosplayer 10</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_11.jpg" alt="Cosplayer 11" loading="lazy">
         <p>Cosplayer 11</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_12.jpg" alt="Cosplayer 12" loading="lazy">
         <p>Cosplayer 12</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_13.jpg" alt="Cosplayer 13" loading="lazy">
         <p>Cosplayer 13</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_14.jpg" alt="Cosplayer 14" loading="lazy">
         <p>Cosplayer 14</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_15.jpg" alt="Cosplayer 15" loading="lazy">
         <p>Cosplayer 15</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_16.jpg" alt="Cosplayer 16" loading="lazy">
         <p>Cosplayer 16</p>
       </div>
-
-      <!-- Foto baru cosplayer 17 - 22 -->
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2652.jpg" alt="Cosplayer 17" loading="lazy">
         <p>Cosplayer 17</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2653.jpg" alt="Cosplayer 18" loading="lazy">
         <p>Cosplayer 18</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2654.jpg" alt="Cosplayer 19" loading="lazy">
         <p>Cosplayer 19</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2655.jpg" alt="Cosplayer 20" loading="lazy">
         <p>Cosplayer 20</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2656.jpg" alt="Cosplayer 21" loading="lazy">
         <p>Cosplayer 21</p>
       </div>
-
       <div class="photo-card" data-category="cosplayer">
         <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2657.jpg" alt="Cosplayer 22" loading="lazy">
         <p>Cosplayer 22</p>
@@ -553,13 +423,10 @@
     </section>
   </main>
 
-  <!-- [FIX #9] Footer konsisten dengan title -->
   <footer>
     &copy; 2026 GalleryFahmi. All rights reserved.
   </footer>
 
-  <!-- [FIX #3] Ganti <span> → <button> untuk modal-close, tambah aria-label -->
-  <!-- [FIX #7] Gunakan placeholder 1x1 transparan untuk src agar tidak request halaman sendiri -->
   <div class="modal" id="imageModal" role="dialog" aria-modal="true" aria-label="Pratinjau gambar">
     <button class="modal-close" onclick="closeModal()" aria-label="Tutup pratinjau">&times;</button>
     <div class="modal-counter" id="modalCounter">1 / 1</div>
@@ -583,16 +450,14 @@
     }
 
     function setActiveFilterButton(category) {
-      document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.filter === category);
       });
     }
 
     function filterGallery(category) {
-      var items = document.querySelectorAll('.photo-card');
-
-      items.forEach(function(item) {
-        var itemCategory = item.getAttribute('data-category');
+      document.querySelectorAll('.photo-card').forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
         if (category === 'all' || itemCategory === category) {
           item.classList.remove('hidden');
         } else {
@@ -602,40 +467,24 @@
 
       visibleImages = getVisibleImages();
       setActiveFilterButton(category);
-
-      // [FIX #6] Tutup modal jika tidak ada gambar yang visible
-      var modal = document.getElementById('imageModal');
-      if (modal.classList.contains('show')) {
-        if (!visibleImages.length) {
-          closeModal();
-        } else {
-          currentIndex = 0;
-          updateModalImage();
-        }
-      }
     }
 
     function openModal(img) {
       visibleImages = getVisibleImages();
       currentIndex = visibleImages.indexOf(img);
+      if (currentIndex === -1) return;
 
-      if (currentIndex === -1 || !visibleImages.length) return;
-
-      var modal = document.getElementById('imageModal');
-      modal.classList.add('show');
+      document.getElementById('imageModal').classList.add('show');
       document.body.style.overflow = 'hidden';
-
       updateModalImage();
     }
 
     function updateModalImage() {
-      var modalImg = document.getElementById('modalImage');
-      var caption = document.getElementById('modalCaption');
-      var counter = document.getElementById('modalCounter');
+      const modalImg = document.getElementById('modalImage');
+      const caption = document.getElementById('modalCaption');
+      const counter = document.getElementById('modalCounter');
 
-      if (!visibleImages.length) return;
-
-      var currentImg = visibleImages[currentIndex];
+      const currentImg = visibleImages[currentIndex];
       modalImg.src = currentImg.src;
       modalImg.alt = currentImg.alt;
       caption.textContent = currentImg.alt;
@@ -643,124 +492,49 @@
     }
 
     function closeModal() {
-      var modal = document.getElementById('imageModal');
-      modal.classList.remove('show');
+      document.getElementById('imageModal').classList.remove('show');
       document.body.style.overflow = '';
     }
 
-    function prevImage(event) {
-      event.stopPropagation();
-      if (!visibleImages.length) return;
+    function prevImage(e) {
+      e.stopPropagation();
       currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
       updateModalImage();
     }
 
-    function nextImage(event) {
-      event.stopPropagation();
-      if (!visibleImages.length) return;
+    function nextImage(e) {
+      e.stopPropagation();
       currentIndex = (currentIndex + 1) % visibleImages.length;
       updateModalImage();
     }
 
-    function handleBackdropClick(event) {
-      if (event.target.id === 'imageModal') {
-        closeModal();
-      }
-    }
-
     function initImageModalClicks() {
-      var images = document.querySelectorAll('.photo-card img');
-      images.forEach(function(img) {
-        img.addEventListener('click', function() {
-          openModal(img);
-        });
+      document.querySelectorAll('.photo-card img').forEach(img => {
+        img.addEventListener('click', () => openModal(img));
       });
     }
 
     function initFilterButtons() {
-      var buttons = document.querySelectorAll('.filter-btn');
-      buttons.forEach(function(button) {
-        button.addEventListener('click', function() {
-          filterGallery(button.dataset.filter);
-        });
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => filterGallery(btn.dataset.filter));
       });
     }
 
-    // [FIX #6] Tambahkan onclick di modal backdrop via JS juga
-    document.getElementById('imageModal').addEventListener('click', handleBackdropClick);
-
-    document.addEventListener('keydown', function(event) {
-      var modal = document.getElementById('imageModal');
-      var isOpen = modal.classList.contains('show');
-
-      if (!isOpen || !visibleImages.length) return;
-
-      if (event.key === 'Escape') {
-        closeModal();
-      } else if (event.key === 'ArrowLeft') {
-        currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
-        updateModalImage();
-      } else if (event.key === 'ArrowRight') {
-        currentIndex = (currentIndex + 1) % visibleImages.length;
-        updateModalImage();
-      }
-    });
-
-    // Fungsi untuk menginisialisasi video HLS tanpa menampilkan error ke user
-    function initHlsVideoSilent(videoId, streamUrl) {
-      var videoElement = document.getElementById(videoId);
-      if (!videoElement) return false;
-
-      if (window.Hls && Hls.isSupported()) {
-        var hls = new Hls({
-          debug: false,
-          enableWorker: true,
-          maxBufferLength: 30,
-          startLevel: -1
-        });
-
-        hls.loadSource(streamUrl);
-        hls.attachMedia(videoElement);
-
-        hls.on(Hls.Events.MANIFEST_PARSED, function() {
-          console.log('HLS: ' + videoId + ' manifest berhasil diparsing');
-          videoElement.controls = true;
-        });
-
-        hls.on(Hls.Events.ERROR, function(event, data) {
-          console.error('HLS Error (' + videoId + '):', data);
-        });
-
-        return true;
-      } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-        videoElement.src = streamUrl;
-        videoElement.addEventListener('error', function(e) {
-          console.error('Native HLS error (' + videoId + '):', e);
-        });
-        return true;
-      } else {
-        console.warn('Browser tidak mendukung HLS untuk ' + videoId);
-        return false;
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', () => {
       initFilterButtons();
       initImageModalClicks();
       visibleImages = getVisibleImages();
+    });
 
-      // Inisialisasi video "tolong aku tidak bisa di usir" (silent)
-      initHlsVideoSilent(
-        'hlsVideoTolong',
-        'https://km-h.phncdn.com/hls/videos/202011/17/370926942/720P_4000K_370926942.mp4/index-v1-a1.m3u8?hdnea=st=1778856282~exp=1778859882~hdl=-1~hmac=c193d841b2fac834e844c14ed553258a12b85cd4'
-      );
-
-      // Inisialisasi video Hazel Moore part 1 (silent)
-      initHlsVideoSilent(
-        'hlsVideoHazel',
-        'https://t59.pcloud.com/cWZ54SkFX7ZskoqAP7ZZZ9xFD5kZQ5ZZWFXZZTv1KfZjmZOMZQmZv8ZlMZhFZtzZZETZwTZ4HZ8LZAMZInZkzZZHUQK5Z2by3W3B7C6zh0gK5nMQeipHT7Wfk/master.m3u8'
-      );
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('imageModal');
+      if (!modal.classList.contains('show')) return;
+      
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft') prevImage(e);
+      if (e.key === 'ArrowRight') nextImage(e);
     });
   </script>
 </body>
-          </html>
+  </html>

@@ -1,540 +1,313 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GalleryFahmi</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Foto & Video</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    :root {
-      --bg: #f5f7fa;
-      --card: #fff;
-      --text: #222;
-      --muted: #666;
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --border: #e5e7eb;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    body {
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-    }
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease;
+        }
 
-    img, video, iframe {
-      display: block;
-      max-width: 100%;
-    }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
 
-    iframe {
-      border: none;
-      overflow: hidden;
-    }
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            animation: fadeIn 1.2s ease;
+        }
 
-    header {
-      text-align: center;
-      padding: 30px 16px 20px;
-    }
+        .filter-btn {
+            padding: 12px 30px;
+            border: none;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
 
-    header h1 {
-      font-size: 28px;
-      margin-bottom: 6px;
-    }
+        .filter-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            background: #667eea;
+            color: white;
+        }
 
-    header h2 {
-      font-size: 20px;
-      margin-bottom: 6px;
-    }
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
 
-    header p {
-      color: var(--muted);
-      font-size: 14px;
-      margin-top: 4px;
-    }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
 
-    main {
-      max-width: 1100px;
-      margin: auto;
-      padding: 0 16px 32px;
-    }
+        .gallery-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.8) translateY(30px);
+            animation: itemFadeIn 0.6s ease forwards;
+        }
 
-    .filters {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0 28px;
-    }
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+        .gallery-item:nth-child(n+7) { animation-delay: 0.7s; }
 
-    .filters button {
-      border: none;
-      background: var(--primary);
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: 0.2s ease;
-    }
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.05) rotate(2deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
 
-    .filters button:hover {
-      opacity: 0.92;
-    }
+        .gallery-item.hide {
+            animation: itemFadeOut 0.4s ease forwards;
+        }
 
-    .filters button.active {
-      background: var(--primary-dark);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
-    }
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
 
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
+        .gallery-item:hover img,
+        .gallery-item:hover video {
+            transform: scale(1.1);
+        }
 
-    .photo-card:has(.video-container) {
-      grid-column: 1 / -1;
-      max-width: 700px;
-      margin: 0 auto;
-      width: 100%;
-    }
+        .item-info {
+            padding: 15px;
+            background: linear-gradient(to bottom, white, #f8f9fa);
+        }
 
-    .photo-card:has(.video-container) .video-container {
-      height: auto;
-      aspect-ratio: 1 / 1;
-    }
+        .item-title {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
 
-    .photo-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    }
+        .item-category {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.85em;
+            animation: pulse 2s infinite;
+        }
 
-    .photo-card img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-      background: #ddd;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
+        /* Keyframe Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .photo-card img:hover {
-      transform: scale(1.02);
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-    .video-container {
-      width: 100%;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 1 / 1;
-    }
+        @keyframes itemFadeIn {
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
 
-    .video-container video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #000;
-    }
+        @keyframes itemFadeOut {
+            to {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+        }
 
-    .video-container iframe {
-      width: 100%;
-      height: 100%;
-    }
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+            }
+        }
 
-    .video-container.responsive-iframe {
-      aspect-ratio: 1 / 1;
-    }
-
-    .photo-card p {
-      text-align: center;
-      padding: 10px;
-      font-size: 14px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px 16px;
-      color: var(--muted);
-      font-size: 14px;
-      border-top: 1px solid var(--border);
-      margin-top: 30px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.92);
-      z-index: 999;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .modal.show {
-      display: flex;
-    }
-
-    .modal-content {
-      position: relative;
-      max-width: 100%;
-      max-height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal img {
-      max-width: 92vw;
-      max-height: 88vh;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      object-fit: contain;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 36px;
-      color: #fff;
-      cursor: pointer;
-      font-weight: bold;
-      z-index: 1001;
-      background: none;
-      border: none;
-    }
-
-    .modal-caption {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-size: 14px;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.45);
-      padding: 8px 12px;
-      border-radius: 8px;
-      max-width: 90%;
-    }
-
-    .modal-counter {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      color: #fff;
-      font-size: 14px;
-      background: rgba(0, 0, 0, 0.45);
-      padding: 8px 12px;
-      border-radius: 8px;
-      z-index: 1001;
-    }
-
-    .modal-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
-      border: none;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 1001;
-    }
-
-    .modal-prev { left: 20px; }
-    .modal-next { right: 20px; }
-
-    @media (max-width: 600px) {
-      .photo-card img,
-      .video-container:not(.responsive-iframe) {
-        height: 260px;
-      }
-    }
-  </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>GalleryFahmi</h1>
-    <h2>Photo Gallery</h2>
-    <p>Galeri Foto</p>
-    <p>Pilih kategori untuk melihat koleksi foto.</p>
-  </header>
+    <div class="container">
+        <header>
+            <h1>🎬 Galeri Foto & Video 📸</h1>
+            <p>Kumpulan konten menarik untuk Anda</p>
+        </header>
 
-  <main>
-    <nav class="filters" aria-label="Filter kategori galeri">
-      <button type="button" class="filter-btn active" data-filter="all">Semua</button>
-      <button type="button" class="filter-btn" data-filter="VideoNganu">VideoNganu</button>
-      <button type="button" class="filter-btn" data-filter="cosplayer">Cosplayer</button>
-    </nav>
-
-    <section class="gallery" aria-label="Galeri konten">
-
-      <!-- VideoNganu -->
-      <div class="photo-card" data-category="VideoNganu">
-        <div class="video-container">
-          <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Video+Preview">
-            <source src="https://6a04a73c46fc04f7c2e1d496.imgix.net/Sneaky%20Smash%20At%20The%20Birthday%20Bash%20%E2%80%93%20PornXP_1.mp4" type="video/mp4">
-          </video>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="VideoNganu">VideoNganu</button>
+            <button class="filter-btn" data-filter="Cosplayer">Cosplayer</button>
         </div>
-        <p>Sneaky Smash At The Birthday Bash – PornXP_1</p>
-      </div>
 
-      <div class="photo-card" data-category="VideoNganu">
-        <div class="video-container">
-          <video controls preload="metadata" playsinline poster="https://via.placeholder.com/400x300?text=Hanna+Hays+Cum4k">
-            <source src="https://6a04d6a146fc04f7c2e1d8c4.imgix.net/1000139601.mp4" type="video/mp4">
-          </video>
+        <div class="gallery" id="gallery">
+            <!-- Video Items -->
+            <div class="gallery-item" data-category="VideoNganu">
+                <video controls>
+                    <source src="video1.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung tag video.
+                </video>
+                <div class="item-info">
+                    <div class="item-title">Video Nganu 1</div>
+                    <span class="item-category">VideoNganu</span>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="VideoNganu">
+                <video controls>
+                    <source src="video2.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung tag video.
+                </video>
+                <div class="item-info">
+                    <div class="item-title">Video Nganu 2</div>
+                    <span class="item-category">VideoNganu</span>
+                </div>
+            </div>
+
+            <!-- Cosplayer Photos -->
+            <div class="gallery-item" data-category="Cosplayer">
+                <img src="cosplay1.jpg" alt="Cosplayer 1">
+                <div class="item-info">
+                    <div class="item-title">Cosplayer 1</div>
+                    <span class="item-category">Cosplayer</span>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="Cosplayer">
+                <img src="cosplay2.jpg" alt="Cosplayer 2">
+                <div class="item-info">
+                    <div class="item-title">Cosplayer 2</div>
+                    <span class="item-category">Cosplayer</span>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="Cosplayer">
+                <img src="cosplay3.jpg" alt="Cosplayer 3">
+                <div class="item-info">
+                    <div class="item-title">Cosplayer 3</div>
+                    <span class="item-category">Cosplayer</span>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="Cosplayer">
+                <img src="cosplay4.jpg" alt="Cosplayer 4">
+                <div class="item-info">
+                    <div class="item-title">Cosplayer 4</div>
+                    <span class="item-category">Cosplayer</span>
+                </div>
+            </div>
         </div>
-        <p>Hanna Hays Cum4k</p>
-      </div>
-
-      <!-- pCloud Lama -->
-      <div class="photo-card" data-category="VideoNganu">
-        <div class="video-container responsive-iframe">
-          <iframe src="https://u.pcloud.link/publink/show?code=XZdD2C5ZsIUF3kjzSr8YVzDG8BXMgSoiRPPV" 
-                  title="Shes Nothing Butt Gamer Anal Trouble free full length XXX video by Brazzers porn"
-                  allowfullscreen loading="lazy"></iframe>
-        </div>
-        <p>Shes Nothing Butt Gamer Anal Trouble free full length XXX video by Brazzers porn</p>
-      </div>
-
-      <!-- pCloud Baru -->
-      <div class="photo-card" data-category="VideoNganu">
-        <div class="video-container responsive-iframe">
-          <iframe src="https://u.pcloud.link/publink/show?code=XZWIBU5Zcd9UH9b93UHkTuCKAyJH14ViQjy0" 
-                  title="My Bros Geeky GF Does Anal"
-                  allowfullscreen loading="lazy"></iframe>
-        </div>
-        <p>My Bros Geeky GF Does Anal</p>
-      </div>
-
-      <!-- Cosplayer -->
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_1.jpg" alt="Cosplayer 1" loading="lazy">
-        <p>Cosplayer 1</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_2.jpg" alt="Cosplayer 2" loading="lazy">
-        <p>Cosplayer 2</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_3.jpg" alt="Cosplayer 3" loading="lazy">
-        <p>Cosplayer 3</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_4.jpg" alt="Cosplayer 4" loading="lazy">
-        <p>Cosplayer 4</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_5.jpg" alt="Cosplayer 5" loading="lazy">
-        <p>Cosplayer 5</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_6.jpg" alt="Cosplayer 6" loading="lazy">
-        <p>Cosplayer 6</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_7.jpg" alt="Cosplayer 7" loading="lazy">
-        <p>Cosplayer 7</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_9.jpg" alt="Cosplayer 9" loading="lazy">
-        <p>Cosplayer 9</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_10.jpg" alt="Cosplayer 10" loading="lazy">
-        <p>Cosplayer 10</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_11.jpg" alt="Cosplayer 11" loading="lazy">
-        <p>Cosplayer 11</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_12.jpg" alt="Cosplayer 12" loading="lazy">
-        <p>Cosplayer 12</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_13.jpg" alt="Cosplayer 13" loading="lazy">
-        <p>Cosplayer 13</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_14.jpg" alt="Cosplayer 14" loading="lazy">
-        <p>Cosplayer 14</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_15.jpg" alt="Cosplayer 15" loading="lazy">
-        <p>Cosplayer 15</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a02ede2fc46b5b25f34683a.imgix.net/yoshinobi_16.jpg" alt="Cosplayer 16" loading="lazy">
-        <p>Cosplayer 16</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2652.jpg" alt="Cosplayer 17" loading="lazy">
-        <p>Cosplayer 17</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2653.jpg" alt="Cosplayer 18" loading="lazy">
-        <p>Cosplayer 18</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2654.jpg" alt="Cosplayer 19" loading="lazy">
-        <p>Cosplayer 19</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2655.jpg" alt="Cosplayer 20" loading="lazy">
-        <p>Cosplayer 20</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2656.jpg" alt="Cosplayer 21" loading="lazy">
-        <p>Cosplayer 21</p>
-      </div>
-      <div class="photo-card" data-category="cosplayer">
-        <img src="https://6a04a73c46fc04f7c2e1d496.imgix.net/yoshinobi_2657.jpg" alt="Cosplayer 22" loading="lazy">
-        <p>Cosplayer 22</p>
-      </div>
-
-    </section>
-  </main>
-
-  <footer>
-    &copy; 2026 GalleryFahmi. All rights reserved.
-  </footer>
-
-  <div class="modal" id="imageModal" role="dialog" aria-modal="true" aria-label="Pratinjau gambar">
-    <button class="modal-close" onclick="closeModal()" aria-label="Tutup pratinjau">&times;</button>
-    <div class="modal-counter" id="modalCounter">1 / 1</div>
-
-    <button class="modal-nav modal-prev" onclick="prevImage(event)" aria-label="Gambar sebelumnya">&#10094;</button>
-
-    <div class="modal-content">
-      <img id="modalImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Preview Full Size">
-      <div class="modal-caption" id="modalCaption"></div>
     </div>
 
-    <button class="modal-nav modal-next" onclick="nextImage(event)" aria-label="Gambar berikutnya">&#10095;</button>
-  </div>
+    <script>
+        // Filter functionality dengan animasi
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
 
-  <script>
-    let currentIndex = 0;
-    let visibleImages = [];
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button dengan animasi
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
 
-    function getVisibleImages() {
-      return Array.from(document.querySelectorAll('.photo-card:not(.hidden) img'));
-    }
+                const filterValue = btn.getAttribute('data-filter');
 
-    function setActiveFilterButton(category) {
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.filter === category);
-      });
-    }
+                galleryItems.forEach((item, index) => {
+                    // Reset animation
+                    item.style.animation = 'none';
+                    
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.classList.remove('hide');
+                        // Re-trigger animation dengan delay
+                        setTimeout(() => {
+                            item.style.animation = `itemFadeIn 0.6s ease forwards ${index * 0.1}s`;
+                        }, 10);
+                    } else {
+                        item.classList.add('hide');
+                    }
+                });
+            });
+        });
 
-    function filterGallery(category) {
-      document.querySelectorAll('.photo-card').forEach(item => {
-        const itemCategory = item.getAttribute('data-category');
-        if (category === 'all' || itemCategory === category) {
-          item.classList.remove('hidden');
-        } else {
-          item.classList.add('hidden');
-        }
-      });
-
-      visibleImages = getVisibleImages();
-      setActiveFilterButton(category);
-    }
-
-    function openModal(img) {
-      visibleImages = getVisibleImages();
-      currentIndex = visibleImages.indexOf(img);
-      if (currentIndex === -1) return;
-
-      document.getElementById('imageModal').classList.add('show');
-      document.body.style.overflow = 'hidden';
-      updateModalImage();
-    }
-
-    function updateModalImage() {
-      const modalImg = document.getElementById('modalImage');
-      const caption = document.getElementById('modalCaption');
-      const counter = document.getElementById('modalCounter');
-
-      const currentImg = visibleImages[currentIndex];
-      modalImg.src = currentImg.src;
-      modalImg.alt = currentImg.alt;
-      caption.textContent = currentImg.alt;
-      counter.textContent = (currentIndex + 1) + ' / ' + visibleImages.length;
-    }
-
-    function closeModal() {
-      document.getElementById('imageModal').classList.remove('show');
-      document.body.style.overflow = '';
-    }
-
-    function prevImage(e) {
-      e.stopPropagation();
-      currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
-      updateModalImage();
-    }
-
-    function nextImage(e) {
-      e.stopPropagation();
-      currentIndex = (currentIndex + 1) % visibleImages.length;
-      updateModalImage();
-    }
-
-    function initImageModalClicks() {
-      document.querySelectorAll('.photo-card img').forEach(img => {
-        img.addEventListener('click', () => openModal(img));
-      });
-    }
-
-    function initFilterButtons() {
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => filterGallery(btn.dataset.filter));
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      initFilterButtons();
-      initImageModalClicks();
-      visibleImages = getVisibleImages();
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      const modal = document.getElementById('imageModal');
-      if (!modal.classList.contains('show')) return;
-      
-      if (e.key === 'Escape') closeModal();
-      if (e.key === 'ArrowLeft') prevImage(e);
-      if (e.key === 'ArrowRight') nextImage(e);
-    });
-  </script>
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const header = document.querySelector('header');
+            header.style.transform = `translateY(${scrolled * 0.5}px)`;
+            header.style.opacity = 1 - (scrolled / 500);
+        });
+    </script>
 </body>
-          </html>
+</html>

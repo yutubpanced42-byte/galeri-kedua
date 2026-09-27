@@ -454,7 +454,7 @@ body{
   <div class="film-list">
     <a class="film-card"
        href="https://u.pcloud.link/publink/show?code=XZdUJ4JZrEO4dzJDgHJni8nkITp9CRnsF8oy"
-       onclick="event.preventDefault();openFilmStream();">
+       onclick="event.preventDefault();openFilmStream(FILM_STREAM_URL,'SHAZAM (2019)');">
       <div class="film-poster">💥</div>
       <div class="film-info">
         <div class="film-tags">
@@ -463,6 +463,20 @@ body{
         </div>
         <div class="film-title">SHAZAM (2019)</div>
         <div class="film-sub">Action · Fantasy · Streaming via public link pCloud (tab baru).</div>
+      </div>
+      <span class="film-play">▶ PUTAR</span>
+    </a>
+    <a class="film-card"
+       href="https://u.pcloud.link/publink/show?code=XZVvA4JZylbL9XoPfuXQNVHIVquyGRNxOMuV"
+       onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZVvA4JZylbL9XoPfuXQNVHIVquyGRNxOMuV','The Accountant (2016)');">
+      <div class="film-poster">🎯</div>
+      <div class="film-info">
+        <div class="film-tags">
+          <span class="tag-stream">▶ STREAM</span>
+          <span class="tag-ext">PUBLIC LINK ↗</span>
+        </div>
+        <div class="film-title">THE ACCOUNTANT (2016)</div>
+        <div class="film-sub">Action · Thriller · Streaming via public link pCloud.</div>
       </div>
       <span class="film-play">▶ PUTAR</span>
     </a>
@@ -621,14 +635,18 @@ function toggleFilm(){
 
 /* ============ FILM STREAM MODAL (POPUP) ============ */
 const FILM_STREAM_URL = 'https://u.pcloud.link/publink/show?code=XZdUJ4JZrEO4dzJDgHJni8nkITp9CRnsF8oy';
-function openFilmStream(){
+function openFilmStream(url, title){
+  const streamUrl = url || FILM_STREAM_URL;
+  const label = title || 'SHAZAM (2019)';
   const modal = document.getElementById('filmModal');
   const frame = document.getElementById('filmPlayer');
-  frame.src = FILM_STREAM_URL;          /* lazy: hanya diisi saat dibuka */
+  frame.src = streamUrl;          /* lazy: hanya diisi saat dibuka */
+  document.getElementById('filmModalTitle').textContent = '🎬 ' + label + ' — STREAMING';
+  frame.title = 'Player ' + label;
   modal.classList.add('is-open');
   document.body.style.overflow = 'hidden';
   document.getElementById('filmModalClose').focus();
-  showToast('Streaming SHAZAM (2019) dimuat di popup...','info','🎬');
+  showToast('Streaming ' + label + ' dimuat di popup...','info','🎬');
 }
 function closeFilmStream(){
   const modal = document.getElementById('filmModal');
@@ -659,5 +677,5 @@ renderTrending();
 setTimeout(()=>showToast('SYSTEM_READY · Selamat membaca di FahmiNovel! 📖','success','✅'), 500);
 </script>
 
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a40616658d2bf46d',t:'MTc5MDI5Nzk3OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4194d82abec7a21',t:'MTc5MDQ5OTQ2Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

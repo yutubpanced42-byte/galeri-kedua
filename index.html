@@ -80,6 +80,13 @@ body{
 .pill-film[aria-expanded="true"]{background:var(--yellow);color:var(--text);box-shadow:3px 3px 0 var(--border), inset 0 0 0 2px var(--border);}
 .pill-film:focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
 
+/* ============ SERIES FILM (nav pill + section) ============ */
+.pill-series{background:var(--blue);color:#fff;}
+.pill-series[aria-expanded="true"]{background:var(--yellow);color:var(--text);box-shadow:3px 3px 0 var(--border), inset 0 0 0 2px var(--border);}
+.pill-series:focus-visible{outline:3px solid var(--purple);outline-offset:2px;}
+.film-list[hidden]{display:none;}
+#seriesSection.is-open{max-height:1600px;}
+
 /* ============ HERO ============ */
 .hero{padding:48px 0 32px;}
 .hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:stretch;}
@@ -401,6 +408,9 @@ body{
       <button class="nav-pill pill-film" id="filmToggle" aria-expanded="false" aria-controls="filmSection" onclick="toggleFilm()">
         <span>🎬</span> FILM
       </button>
+      <button class="nav-pill pill-series" id="seriesToggle" aria-expanded="false" aria-controls="seriesSection" onclick="toggleSeries()">
+        <span>📺</span> SERIES FILM
+      </button>
       <a href="#trending" class="nav-pill pill-donasi">
         <span>📚</span> Novel
       </a>
@@ -482,6 +492,136 @@ body{
     </a>
   </div>
   <p class="film-note">ℹ️ Klik kartu / PUTAR untuk memutar di POPUP mengambang — streaming langsung di halaman ini, tanpa tab baru.</p>
+</section>
+
+<!-- ============ SERIES FILM SECTION (TOGGLE) ============ -->
+<section id="seriesSection" class="film-section" aria-label="Daftar series film">
+  <div class="section-head">
+    <h2 class="section-title"><span class="bar"></span>📺 SERIES FILM</h2>
+    <span class="section-more">STREAMING · PUBLIC LINK</span>
+  </div>
+  <div class="film-list">
+    <a class="film-card" id="poiSeriesCard" href="#seriesSection"
+       aria-expanded="false" aria-controls="poiEpList"
+       onclick="event.preventDefault();togglePoiEps();">
+      <div class="film-poster">🕵️</div>
+      <div class="film-info">
+        <div class="film-tags">
+          <span class="tag-stream">▶ SERIES</span>
+          <span class="tag-ext">S1 · EP 16–23 · 1080p</span>
+        </div>
+        <div class="film-title">PERSON OF INTEREST S1</div>
+        <div class="film-sub">Crime · Thriller · 8 episode (16–23) resolusi 1080p · klik untuk daftar episode.</div>
+      </div>
+      <span class="film-play" id="poiPlayLabel">▾ EPISODE</span>
+    </a>
+    <div class="film-list" id="poiEpList" hidden>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZeG74JZMjY9DTi8hSbRAXqboSe7AHGdQMu7"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZeG74JZMjY9DTi8hSbRAXqboSe7AHGdQMu7','Person of Interest S1 · Episode 16 — Risk (1080p)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">1080p</span>
+          </div>
+          <div class="film-title">EPISODE 16 · RISK</div>
+          <div class="film-sub">Person of Interest S1 · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZbbk4JZ0vroGe87RQ8bGfxuHQePdRQ2zA6V"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZbbk4JZ0vroGe87RQ8bGfxuHQePdRQ2zA6V','Person of Interest S1 · Episode 17 — Baby Blue (1080p)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">1080p</span>
+          </div>
+          <div class="film-title">EPISODE 17 · BABY BLUE</div>
+          <div class="film-sub">Person of Interest S1 · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZkQa4JZx0LalU8k2FmI37kGmrMjGzyEW9oy"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZkQa4JZx0LalU8k2FmI37kGmrMjGzyEW9oy','Person of Interest S1 · Episode 18 — Identity Crisis (1080p)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">1080p</span>
+          </div>
+          <div class="film-title">EPISODE 18 · IDENTITY CRISIS</div>
+          <div class="film-sub">Person of Interest S1 · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZXQa4JZdUPQaBdgBUyPASRfbv1AX0XUdGvk"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZXQa4JZdUPQaBdgBUyPASRfbv1AX0XUdGvk','Person of Interest S1 · Episode 19 — Flesh and Blood (1080p)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">1080p</span>
+          </div>
+          <div class="film-title">EPISODE 19 · FLESH AND BLOOD</div>
+          <div class="film-sub">Person of Interest S1 · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZVQa4JZIKCUi9ITPnYT4QfmHX9SGQlP7d37"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZVQa4JZIKCUi9ITPnYT4QfmHX9SGQlP7d37','Person of Interest S1 · Episode 20 — Matsya Nyaya (1080p)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">1080p</span>
+          </div>
+          <div class="film-title">EPISODE 20 · MATSYA NYAYA</div>
+          <div class="film-sub">Person of Interest S1 · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZ0Qa4JZJgDX3s66QnYzI1bYUhyggm1DyAsX"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZ0Qa4JZJgDX3s66QnYzI1bYUhyggm1DyAsX','Person of Interest S1 · Episode 21 — Many Happy Returns (1080p)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">1080p</span>
+          </div>
+          <div class="film-title">EPISODE 21 · MANY HAPPY RETURNS</div>
+          <div class="film-sub">Person of Interest S1 · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZ5Qa4JZPw2UTBVcbHmrmp58oUvUA4oYQn5k"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZ5Qa4JZPw2UTBVcbHmrmp58oUvUA4oYQn5k','Person of Interest S1 · Episode 22 — No Good Deed (1080p)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">1080p</span>
+          </div>
+          <div class="film-title">EPISODE 22 · NO GOOD DEED</div>
+          <div class="film-sub">Person of Interest S1 · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZJQa4JZHFUzb66fnuudcczADxWYrHGCzy1y"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZJQa4JZHFUzb66fnuudcczADxWYrHGCzy1y','Person of Interest S1 · Episode 23 — Firewall (1080p)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">1080p</span>
+          </div>
+          <div class="film-title">EPISODE 23 · FIREWALL</div>
+          <div class="film-sub">Person of Interest S1 · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+    </div>
+  </div>
 </section>
 
 <!-- ============ TRENDING NOVELS ============ -->
@@ -633,6 +773,26 @@ function toggleFilm(){
   showToast(filmOpen ? 'Daftar film dibuka — pilih judul untuk streaming.' : 'Daftar film ditutup.', 'info', filmOpen ? '🎬' : '❎');
 }
 
+/* ============ SERIES FILM TOGGLE ============ */
+let seriesOpen = false;
+function toggleSeries(){
+  seriesOpen = !seriesOpen;
+  const panel = document.getElementById('seriesSection');
+  const btn = document.getElementById('seriesToggle');
+  panel.classList.toggle('is-open', seriesOpen);
+  btn.setAttribute('aria-expanded', seriesOpen ? 'true' : 'false');
+  showToast(seriesOpen ? 'Series Film dibuka \u2014 pilih series & episode.' : 'Series Film ditutup.', 'info', seriesOpen ? '\u{1F4FA}' : '\u{1F4AE}');
+}
+let poiEpsOpen = false;
+function togglePoiEps(){
+  poiEpsOpen = !poiEpsOpen;
+  const list = document.getElementById('poiEpList');
+  if (poiEpsOpen) list.removeAttribute('hidden'); else list.setAttribute('hidden','');
+  document.getElementById('poiSeriesCard').setAttribute('aria-expanded', poiEpsOpen ? 'true' : 'false');
+  document.getElementById('poiPlayLabel').textContent = poiEpsOpen ? '\u25B4 TUTUP' : '\u25BE EPISODE';
+  showToast(poiEpsOpen ? 'Person of Interest S1 \u2014 8 episode (16\u201323) siap diputar.' : 'Daftar episode ditutup.', 'info', '\u{1F575}\uFE0F');
+}
+
 /* ============ FILM STREAM MODAL (POPUP) ============ */
 const FILM_STREAM_URL = 'https://u.pcloud.link/publink/show?code=XZdUJ4JZrEO4dzJDgHJni8nkITp9CRnsF8oy';
 function openFilmStream(url, title){
@@ -677,5 +837,5 @@ renderTrending();
 setTimeout(()=>showToast('SYSTEM_READY · Selamat membaca di FahmiNovel! 📖','success','✅'), 500);
 </script>
 
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4194d82abec7a21',t:'MTc5MDQ5OTQ2Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a41edd17bc9efde3',t:'MTc5MDU1Nzc3Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

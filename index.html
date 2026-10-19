@@ -87,6 +87,12 @@ body{
 .film-list[hidden]{display:none;}
 #seriesSection.is-open{max-height:10000px;}
 
+/* ============ FOTO (nav pill + section) ============ */
+.pill-foto{background:var(--green);color:var(--text);}
+.pill-foto[aria-expanded="true"]{background:var(--yellow);color:var(--text);box-shadow:3px 3px 0 var(--border), inset 0 0 0 2px var(--border);}
+.pill-foto:focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
+#fotoSection.is-open{max-height:10000px;}
+
 /* ============ HERO ============ */
 .hero{padding:48px 0 32px;}
 .hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:stretch;}
@@ -414,6 +420,9 @@ body{
       <a href="#trending" class="nav-pill pill-donasi">
         <span>📚</span> Novel
       </a>
+      <button class="nav-pill pill-foto" id="fotoToggle" aria-expanded="false" aria-controls="fotoSection" onclick="toggleFoto()">
+        <span>📷</span> FOTO
+      </button>
       <a href="https://t.me/Fahmii_X7" target="_blank" rel="noopener noreferrer" class="nav-pill" onclick="showToast('Membuka Telegram @Fahmii_X7...','info','💬')">
         <span>💬</span> Feedback
       </a>
@@ -543,6 +552,20 @@ body{
         </div>
         <div class="film-title">AQUAMAN AND THE LOST KINGDOM</div>
         <div class="film-sub">Action · Adventure · Streaming via public link pCloud.</div>
+      </div>
+      <span class="film-play">▶ PUTAR</span>
+    </a>
+    <a class="film-card"
+       href="https://u.pcloud.link/publink/show?code=XZ59mbJZCIRY4NXaWIpPcqSQVxrM6j4DWO2k"
+       onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZ59mbJZCIRY4NXaWIpPcqSQVxrM6j4DWO2k','IRON MAN (2008)');">
+      <div class="film-poster">🤖</div>
+      <div class="film-info">
+        <div class="film-tags">
+          <span class="tag-stream">▶ STREAM</span>
+          <span class="tag-ext">PUBLIC LINK ↗</span>
+        </div>
+        <div class="film-title">IRON MAN (2008)</div>
+        <div class="film-sub">Action · Sci-Fi · Streaming via public link pCloud.</div>
       </div>
       <span class="film-play">▶ PUTAR</span>
     </a>
@@ -678,6 +701,16 @@ body{
       </a>
     </div>
   </div>
+</section>
+
+<!-- ============ FOTO SECTION (TOGGLE) ============ -->
+<section id="fotoSection" class="film-section" aria-label="Galeri foto">
+  <div class="section-head">
+    <h2 class="section-title"><span class="bar"></span>📷 FOTO</h2>
+    <span class="section-more">GALERI · SEGERA HADIR</span>
+  </div>
+  <div class="film-list" id="fotoList"></div>
+  <p class="film-note">ℹ️ Panel sudah siap — kartu foto tinggal ditambahkan ke dalam #fotoList mengikuti pola .film-card.</p>
 </section>
 
 <!-- ============ TRENDING NOVELS ============ -->
@@ -818,10 +851,27 @@ function chapterSoon(ch){
   showToast(`Chapter ${ch} — placeholder, isi belum tersedia.`,'warn','🚧');
 }
 
+/* ============ PANEL FILM/SERIES/FOTO: BUKA SATU MENUTUP YANG LAIN ============ */
+function closeFilmPanels(keepId){
+  var panels = [['filmSection','filmToggle','filmOpen'], ['seriesSection','seriesToggle','seriesOpen'], ['fotoSection','fotoToggle','fotoOpen']];
+  for (var i = 0; i < panels.length; i++){
+    if (panels[i][0] === keepId) continue;
+    var p = document.getElementById(panels[i][0]);
+    var b = document.getElementById(panels[i][1]);
+    if (!p || !p.classList.contains('is-open')) continue;
+    p.classList.remove('is-open');
+    if (b) b.setAttribute('aria-expanded', 'false');
+    if (panels[i][2] === "filmOpen") filmOpen = false;
+    else if (panels[i][2] === "seriesOpen") seriesOpen = false;
+    else if (panels[i][2] === "fotoOpen") fotoOpen = false;
+  }
+}
+
 /* ============ FILM TOGGLE ============ */
 let filmOpen = false;
 function toggleFilm(){
   filmOpen = !filmOpen;
+  if (filmOpen) closeFilmPanels('filmSection');
   const panel = document.getElementById('filmSection');
   const btn = document.getElementById('filmToggle');
   panel.classList.toggle('is-open', filmOpen);
@@ -833,11 +883,24 @@ function toggleFilm(){
 let seriesOpen = false;
 function toggleSeries(){
   seriesOpen = !seriesOpen;
+  if (seriesOpen) closeFilmPanels('seriesSection');
   const panel = document.getElementById('seriesSection');
   const btn = document.getElementById('seriesToggle');
   panel.classList.toggle('is-open', seriesOpen);
   btn.setAttribute('aria-expanded', seriesOpen ? 'true' : 'false');
   showToast(seriesOpen ? 'Series Film dibuka \u2014 pilih series & episode.' : 'Series Film ditutup.', 'info', seriesOpen ? '\u{1F4FA}' : '\u{1F4AE}');
+}
+
+/* ============ FOTO TOGGLE ============ */
+let fotoOpen = false;
+function toggleFoto(){
+  fotoOpen = !fotoOpen;
+  if (fotoOpen) closeFilmPanels('fotoSection');
+  const panel = document.getElementById('fotoSection');
+  const btn = document.getElementById('fotoToggle');
+  panel.classList.toggle('is-open', fotoOpen);
+  btn.setAttribute('aria-expanded', fotoOpen ? 'true' : 'false');
+  showToast(fotoOpen ? 'Panel Foto dibuka \u2014 isi segera menyusul.' : 'Panel Foto ditutup.', 'info', fotoOpen ? '\u{1F4F7}' : '\u274C');
 }
 let poiEpsOpen = false;
 function togglePoiEps(){
@@ -893,5 +956,5 @@ renderTrending();
 setTimeout(()=>showToast('SYSTEM_READY · Selamat membaca di FahmiNovel! 📖','success','✅'), 500);
 </script>
 
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a41ee8e11b2dfd30',t:'MTc5MDU1ODI1OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4ac598f3f7ac390',t:'MTc5MjA0MTM2Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a41ee8e11b2dfd30',t:'MTc5MDU1ODI1OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4cf60773d89df83',t:'MTc5MjQwODY1MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

@@ -93,6 +93,12 @@ body{
 .pill-foto:focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
 #fotoSection.is-open{max-height:10000px;}
 
+/* ============ ANIME (nav pill + section) ============ */
+.pill-anime{background:var(--orange);color:var(--text);}
+.pill-anime[aria-expanded="true"]{background:var(--yellow);color:var(--text);box-shadow:3px 3px 0 var(--border), inset 0 0 0 2px var(--border);}
+.pill-anime:focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
+#animeSection.is-open{max-height:10000px;}
+
 /* ============ HERO ============ */
 .hero{padding:48px 0 32px;}
 .hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:stretch;}
@@ -423,6 +429,9 @@ body{
       <button class="nav-pill pill-foto" id="fotoToggle" aria-expanded="false" aria-controls="fotoSection" onclick="toggleFoto()">
         <span>📷</span> FOTO
       </button>
+      <button class="nav-pill pill-anime" id="animeToggle" aria-expanded="false" aria-controls="animeSection" onclick="toggleAnime()">
+        <span>⚔️</span> ANIME
+      </button>
       <a href="https://t.me/Fahmii_X7" target="_blank" rel="noopener noreferrer" class="nav-pill" onclick="showToast('Membuka Telegram @Fahmii_X7...','info','💬')">
         <span>💬</span> Feedback
       </a>
@@ -713,6 +722,293 @@ body{
   <p class="film-note">ℹ️ Panel sudah siap — kartu foto tinggal ditambahkan ke dalam #fotoList mengikuti pola .film-card.</p>
 </section>
 
+<!-- ============ ANIME SECTION (TOGGLE) ============ -->
+<section id="animeSection" class="film-section" aria-label="Daftar anime">
+  <div class="section-head">
+    <h2 class="section-title"><span class="bar"></span>⚔️ ANIME</h2>
+    <span class="section-more">STREAMING · SUB INDO · PUBLIC LINK</span>
+  </div>
+  <div class="film-list">
+    <a class="film-card" id="bcAnimeCard" href="#animeSection"
+       aria-expanded="false" aria-controls="bcEpList"
+       onclick="event.preventDefault();toggleBcEps();">
+      <div class="film-poster">🍀</div>
+      <div class="film-info">
+        <div class="film-tags">
+          <span class="tag-stream">▶ ANIME</span>
+          <span class="tag-ext">EP 01–20 · 720p SUB INDO</span>
+        </div>
+        <div class="film-title">BLACK CLOVER 2017</div>
+        <div class="film-sub">Action · Fantasy · Magic · 20 episode (1–20) resolusi 720p Sub Indo · klik untuk daftar episode.</div>
+      </div>
+      <span class="film-play" id="bcPlayLabel">▾ EPISODE</span>
+    </a>
+    <div class="film-list" id="bcEpList" hidden>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZFhubJZPIHOlT74MvjG4GXGWI1Dyf06T2mX"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZFhubJZPIHOlT74MvjG4GXGWI1Dyf06T2mX','BLACK CLOVER 2017 · Episode 01 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 01 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZzhubJZ4JIt6DPMP1QawBlz9MWWW4JiTnEk"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZzhubJZ4JIt6DPMP1QawBlz9MWWW4JiTnEk','BLACK CLOVER 2017 · Episode 02 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 02 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZLhubJZAvmchOqfhaz7OxcduE8yYhkJ8t07"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZLhubJZAvmchOqfhaz7OxcduE8yYhkJ8t07','BLACK CLOVER 2017 · Episode 03 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 03 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZ4hubJZJ8HmdO2D6V5B4bnS0upaFBtodjgV"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZ4hubJZJ8HmdO2D6V5B4bnS0upaFBtodjgV','BLACK CLOVER 2017 · Episode 04 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 04 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZYhubJZgRDK2ypmbQpLkdlmelxx5YUnsA7k"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZYhubJZgRDK2ypmbQpLkdlmelxx5YUnsA7k','BLACK CLOVER 2017 · Episode 05 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 05 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZbhubJZoorxd7zQXp0Rr1pu4AJfak7aDIQV"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZbhubJZoorxd7zQXp0Rr1pu4AJfak7aDIQV','BLACK CLOVER 2017 · Episode 06 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 06 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZhhubJZNs8MiUPeo8JatqRsDpJKBQKJWtAk"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZhhubJZNs8MiUPeo8JatqRsDpJKBQKJWtAk','BLACK CLOVER 2017 · Episode 07 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 07 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZuhubJZTYWpOlWuXYY8N0nu0h5OBmA1LyyX"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZuhubJZTYWpOlWuXYY8N0nu0h5OBmA1LyyX','BLACK CLOVER 2017 · Episode 08 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 08 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZfhubJZIkG41PIvvr8R7JBOLkTb7VIOxM7y"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZfhubJZIkG41PIvvr8R7JBOLkTb7VIOxM7y','BLACK CLOVER 2017 · Episode 09 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 09 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZ2hubJZGtPfs0xdb8RCuKToG3ktIyzV9E4X"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZ2hubJZGtPfs0xdb8RCuKToG3ktIyzV9E4X','BLACK CLOVER 2017 · Episode 10 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 10 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZphubJZ61Lzu4O6hm5AraPK4UgyU0feobHX"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZphubJZ61Lzu4O6hm5AraPK4UgyU0feobHX','BLACK CLOVER 2017 · Episode 11 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 11 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZHhubJZIm8mc52gkkuWe3JIvng7czQpRwK7"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZHhubJZIm8mc52gkkuWe3JIvng7czQpRwK7','BLACK CLOVER 2017 · Episode 12 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 12 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZRhubJZxhvTQohyqNS2ilXRMkFFbYbS55oy"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZRhubJZxhvTQohyqNS2ilXRMkFFbYbS55oy','BLACK CLOVER 2017 · Episode 13 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 13 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZ8hubJZ7vXYC2KeJ40iDCTHyS5sCyGLW93X"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZ8hubJZ7vXYC2KeJ40iDCTHyS5sCyGLW93X','BLACK CLOVER 2017 · Episode 14 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 14 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZQhubJZz2seeWk4ANYT7rmkNUybFQc3BDKk"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZQhubJZz2seeWk4ANYT7rmkNUybFQc3BDKk','BLACK CLOVER 2017 · Episode 15 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 15 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZmhubJZc7XX8kxEBjysLj8wKQbEAXrpgsyX"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZmhubJZc7XX8kxEBjysLj8wKQbEAXrpgsyX','BLACK CLOVER 2017 · Episode 16 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 16 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZShubJZ0eTbGBWay2yctLjAAvqnEkR4ULp7"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZShubJZ0eTbGBWay2yctLjAAvqnEkR4ULp7','BLACK CLOVER 2017 · Episode 17 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 17 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZjhubJZ5qQteO8Kxd4DRK1XNJWRpfQghL67"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZjhubJZ5qQteO8Kxd4DRK1XNJWRpfQghL67','BLACK CLOVER 2017 · Episode 18 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 18 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZBhubJZnxYMG9pDtf8akqzgb4tn7SFzxyjk"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZBhubJZnxYMG9pDtf8akqzgb4tn7SFzxyjk','BLACK CLOVER 2017 · Episode 19 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 19 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+      <a class="film-card" href="https://u.pcloud.link/publink/show?code=XZWhubJZOM3yRU1hnyF799OSXm4BAXWJqgD7"
+         onclick="event.preventDefault();openFilmStream('https://u.pcloud.link/publink/show?code=XZWhubJZOM3yRU1hnyF799OSXm4BAXWJqgD7','BLACK CLOVER 2017 · Episode 20 (720p Sub Indo)');">
+        <div class="film-poster">🎞️</div>
+        <div class="film-info">
+          <div class="film-tags">
+            <span class="tag-stream">▶ STREAM</span>
+            <span class="tag-ext">720p SUB INDO</span>
+          </div>
+          <div class="film-title">EPISODE 20 · BLACK CLOVER</div>
+          <div class="film-sub">Black Clover (2017) · Subtitle Indonesia · streaming via public link pCloud.</div>
+        </div>
+        <span class="film-play">▶ PUTAR</span>
+      </a>
+    </div>
+  </div>
+  <p class="film-note">ℹ️ Klik judul BLACK CLOVER 2017 untuk membuka daftar episode (1–20), lalu klik PUTAR untuk streaming langsung di halaman ini.</p>
+</section>
+
 <!-- ============ TRENDING NOVELS ============ -->
 <section id="trending">
   <div class="section-head">
@@ -853,7 +1149,7 @@ function chapterSoon(ch){
 
 /* ============ PANEL FILM/SERIES/FOTO: BUKA SATU MENUTUP YANG LAIN ============ */
 function closeFilmPanels(keepId){
-  var panels = [['filmSection','filmToggle','filmOpen'], ['seriesSection','seriesToggle','seriesOpen'], ['fotoSection','fotoToggle','fotoOpen']];
+  var panels = [['filmSection','filmToggle','filmOpen'], ['seriesSection','seriesToggle','seriesOpen'], ['fotoSection','fotoToggle','fotoOpen'], ['animeSection','animeToggle','animeOpen']];
   for (var i = 0; i < panels.length; i++){
     if (panels[i][0] === keepId) continue;
     var p = document.getElementById(panels[i][0]);
@@ -864,6 +1160,7 @@ function closeFilmPanels(keepId){
     if (panels[i][2] === "filmOpen") filmOpen = false;
     else if (panels[i][2] === "seriesOpen") seriesOpen = false;
     else if (panels[i][2] === "fotoOpen") fotoOpen = false;
+    else if (panels[i][2] === "animeOpen") animeOpen = false;
   }
 }
 
@@ -901,6 +1198,27 @@ function toggleFoto(){
   panel.classList.toggle('is-open', fotoOpen);
   btn.setAttribute('aria-expanded', fotoOpen ? 'true' : 'false');
   showToast(fotoOpen ? 'Panel Foto dibuka \u2014 isi segera menyusul.' : 'Panel Foto ditutup.', 'info', fotoOpen ? '\u{1F4F7}' : '\u274C');
+}
+
+/* ============ ANIME TOGGLE ============ */
+let animeOpen = false;
+function toggleAnime(){
+  animeOpen = !animeOpen;
+  if (animeOpen) closeFilmPanels('animeSection');
+  const panel = document.getElementById('animeSection');
+  const btn = document.getElementById('animeToggle');
+  panel.classList.toggle('is-open', animeOpen);
+  btn.setAttribute('aria-expanded', animeOpen ? 'true' : 'false');
+  showToast(animeOpen ? 'Kategori Anime dibuka \u2014 pilih judul & episode.' : 'Kategori Anime ditutup.', 'info', animeOpen ? '\u2694\uFE0F' : '\u274C');
+}
+let bcEpsOpen = false;
+function toggleBcEps(){
+  bcEpsOpen = !bcEpsOpen;
+  const list = document.getElementById('bcEpList');
+  if (bcEpsOpen) list.removeAttribute('hidden'); else list.setAttribute('hidden','');
+  document.getElementById('bcAnimeCard').setAttribute('aria-expanded', bcEpsOpen ? 'true' : 'false');
+  document.getElementById('bcPlayLabel').textContent = bcEpsOpen ? '\u25B4 TUTUP' : '\u25BE EPISODE';
+  showToast(bcEpsOpen ? 'BLACK CLOVER 2017 \u2014 20 episode (1\u201320) siap diputar.' : 'Daftar episode Black Clover ditutup.', 'info', '\u{1F340}');
 }
 let poiEpsOpen = false;
 function togglePoiEps(){
@@ -956,5 +1274,5 @@ renderTrending();
 setTimeout(()=>showToast('SYSTEM_READY · Selamat membaca di FahmiNovel! 📖','success','✅'), 500);
 </script>
 
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a41ee8e11b2dfd30',t:'MTc5MDU1ODI1OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4cf60773d89df83',t:'MTc5MjQwODY1MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a41ee8e11b2dfd30',t:'MTc5MDU1ODI1OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
